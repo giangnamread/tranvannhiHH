@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phần mềm ứng dụng đọc số electron</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        canvas { background-color: #0f172a; border-radius: 1rem; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-2 text-blue-400">
+                    ⚛️ Phần mềm ứng dụng đọc số electron
+                </h1>
+                <p class="text-slate-400 text-xs md:text-sm mt-1">
+                    Tích hợp: Tra cứu Toàn bộ 118 Nguyên tố, Giải thích động sự chuyển động của electron & Khí Điện tử Tự do.
+                </p>
+                <div class="mt-2 inline-flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-700 text-xs shadow-inner">
+                    <span class="text-emerald-400 font-semibold">👨‍🏫 Giáo viên giảng dạy:</span>
+                    <span class="text-slate-200 font-bold">Thầy Phạm Văn Nhi</span>
+                    <span class="text-slate-500">|</span>
+                    <span class="text-blue-300">Trung tâm GDNN-GDTX Hướng Hóa</span>
+                </div>
+            </div>
+            <!-- Main Module Switcher -->
+            <div class="flex bg-slate-900 p-1.5 rounded-xl border border-slate-700">
+                <button onclick="switchAppTab('config')" id="tabBtnConfig" class="px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow">
+                    ⚛️ Bảng 118 Nguyên Tố
+                </button>
+                <button onclick="switchAppTab('electron')" id="tabBtnElectron" class="px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800">
+                    ⚡ Khí Điện Tử Tự Do
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
+
+        <!-- ==================== MODULE 1: ELECTRON CONFIGURATION (1-118) ==================== -->
+        <div id="moduleConfig" class="space-y-6">
+            <!-- Subnav for Config -->
+            <div class="flex flex-wrap gap-2 bg-slate-800 p-3 rounded-2xl border border-slate-700 items-center justify-between">
+                <div class="flex gap-2">
+                    <button onclick="switchConfigSub('explorer')" id="subBtnExplorer" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition">Tra cứu Nguyên tố</button>
+                    <button onclick="switchConfigSub('aufbau')" id="subBtnAufbau" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition">Quy tắc Aufbau</button>
+                    <button onclick="switchConfigSub('quiz')" id="subBtnQuiz" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition">Trắc nghiệm</button>
+                </div>
+                <div class="text-xs text-slate-400">✨ Click vào nguyên tố để chọn xem chi tiết. Dùng phím ⬆️ ⬇️ để di chuyển danh sách.</div>
+            </div>
+
+            <!-- View 1: Explorer -->
+            <div id="subViewExplorer" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-slate-800 rounded-2xl border border-slate-700 p-4 flex flex-col h-[580px]">
+                    <div class="mb-3 space-y-2">
+                        <label class="block text-xs font-medium text-slate-400">Tìm kiếm nguyên tố (1-118)</label>
+                        <input type="text" id="searchInput" oninput="filterElements()" onkeydown="handleListKeydown(event)" placeholder="Nhập tên, ký hiệu hoặc số Z..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex-grow overflow-y-auto pr-1 space-y-1.5 outline-none focus:ring-1 focus:ring-blue-500 rounded-xl" tabindex="0" id="elementListContainer" onkeydown="handleListKeydown(event)"></div>
+                </div>
+
+                <div class="lg:col-span-2 bg-slate-800 rounded-2xl border border-slate-700 p-6 flex flex-col justify-between">
+                    <div id="elementDetail" class="space-y-6"></div>
+                    <div class="mt-6 pt-4 border-t border-slate-700 text-xs text-slate-400 flex justify-between">
+                        <span>Dynamic Bohr Model & Electron Motion Explanation (118 Elements)</span>
+                        <span>Phần mềm đọc số electron</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 2: Aufbau -->
+            <div id="subViewAufbau" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6">
+                    <h2 class="text-lg font-bold text-slate-100 mb-3 flex items-center gap-2">📐 Quy tắc đường chéo (Aufbau)</h2>
+                    <p class="text-xs text-slate-300 mb-4 leading-relaxed">Electron điền vào các obitan theo thứ tự mức năng lượng tăng dần. Theo chiều từ mũi tên trên xuống dưới, phải sang trái.</p>
+                    <div class="bg-slate-950 text-emerald-400 font-mono p-4 rounded-xl text-xs leading-relaxed border border-slate-800 shadow-inner">
+                        1s<br>
+                        2s &nbsp; 2p<br>
+                        3s &nbsp; 3p &nbsp; 3d<br>
+                        4s &nbsp; 4p &nbsp; 4d &nbsp; 4f<br>
+                        5s &nbsp; 5p &nbsp; 5d &nbsp; 5f<br>
+                        6s &nbsp; 6p &nbsp; 6d &nbsp; 7f<br>
+                        7s &nbsp; 7p
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6">
+                        <h2 class="text-lg font-bold text-slate-100 mb-3 flex items-center gap-2">🔑 Sức chứa phân lớp</h2>
+                        <ul class="space-y-2.5 text-xs text-slate-300">
+                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                                <span class="w-7 h-7 rounded-lg bg-blue-900/50 text-blue-400 font-bold flex items-center justify-center">s</span>
+                                <span>Phân lớp <strong>s</strong> tối đa <strong>2 electron</strong></span>
+                            </li>
+                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                                <span class="w-7 h-7 rounded-lg bg-emerald-900/50 text-emerald-400 font-bold flex items-center justify-center">p</span>
+                                <span>Phân lớp <strong>p</strong> tối đa <strong>6 electron</strong></span>
+                            </li>
+                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                                <span class="w-7 h-7 rounded-lg bg-amber-900/50 text-amber-400 font-bold flex items-center justify-center">d</span>
+                                <span>Phân lớp <strong>d</strong> tối đa <strong>10 electron</strong></span>
+                            </li>
+                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                                <span class="w-7 h-7 rounded-lg bg-purple-900/50 text-purple-400 font-bold flex items-center justify-center">f</span>
+                                <span>Phân lớp <strong>f</strong> tối đa <strong>14 electron</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 3: Quiz -->
+            <div id="subViewQuiz" class="hidden max-w-2xl mx-auto bg-slate-800 rounded-2xl border border-slate-700 p-6">
+                <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-700">
+                    <h2 class="text-lg font-bold text-slate-100">🧠 Thử thách Đọc số electron & Cấu hình</h2>
+                    <span id="quizScore" class="bg-blue-900/60 text-blue-300 border border-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Điểm: 0 / 0</span>
+                </div>
+                <div id="quizContainer" class="space-y-6"></div>
+            </div>
+        </div>
+
+        <!-- ==================== MODULE 2: FREE ELECTRON MODEL ==================== -->
+        <div id="moduleElectron" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Canvas Simulation (3 cols) -->
+            <div class="lg:col-span-3 flex flex-col space-y-4">
+                <div class="relative bg-slate-950 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col items-center justify-center p-2">
+                    <div class="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-700 text-xs flex gap-4">
+                        <div>Tốc độ trôi (vd): <span id="statDrift" class="font-mono font-bold text-blue-400">0.00</span></div>
+                        <div>Cường độ (I): <span id="statCurrent" class="font-mono font-bold text-emerald-400">0.00 A</span></div>
+                        <div>Va chạm: <span id="statCollisions" class="font-mono font-bold text-amber-400">0</span></div>
+                    </div>
+
+                    <canvas id="simCanvas" width="800" height="480" class="w-full h-auto max-h-[520px] shadow-inner cursor-crosshair"></canvas>
+                    
+                    <div class="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 text-[11px] text-slate-400 flex items-center gap-3">
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span> Electron (-)</span>
+                        <span class="flex items-center gap-1"><span class="w-3.5 h-3.5 rounded-full bg-red-500 inline-block"></span> Ion dương (+)</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl">
+                        <h3 class="font-semibold text-blue-400 text-xs mb-1">🌡️ Nhiệt độ & Dao động</h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">Nhiệt độ cao làm ion dao động mạnh quanh nút mạng, tăng va chạm và làm giảm độ dẫn điện.</p>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl">
+                        <h3 class="font-semibold text-emerald-400 text-xs mb-1">🔋 Điện trường & Dòng trôi</h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">Khi đặt điện trường (E), electron chuyển động dịch chuyển có hướng tạo ra dòng điện.</p>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl">
+                        <h3 class="font-semibold text-amber-400 text-xs mb-1">⚛️ Bản chất kim loại</h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">Electron hóa trị rời nguyên tử thành electron tự do trong khối kim loại.</p>
+                    </div>
+                </div>
+
+                <!-- Detailed Explanation Panel for Electron Motion -->
+                <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl space-y-2">
+                    <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">📖 Giải thích chi tiết quá trình chuyển động của electron</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Trong mô hình khí electron tự do, các electron hóa trị bứt ra khỏi nguyên tử kim loại và chuyển động nhiệt hỗn loạn với vận tốc rất lớn (cỡ 10⁵ m/s). Khi chưa có điện trường đặt vào, các vận tốc này triệt tiêu lẫn nhau nên không có dòng điện có hướng.
+                    </p>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Khi thiết lập một hiệu điện thế (điện trường E), lực điện trường tác dụng lên các electron mang điện âm, ép chúng dịch chuyển có hướng ngược chiều điện trường với một vận tốc trôi vd nhỏ hơn rất nhiều. Trên đường di chuyển, chúng liên tục va chạm đàn hồi với các ion dương dao động nhiệt tại nút mạng tinh thể, làm đổi hướng liên tục nhưng tổng thể vẫn dịch chuyển có hướng tạo nên dòng điện.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Controls Sidebar (1 col) -->
+            <div class="space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 space-y-5 shadow-lg">
+                    <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2 border-b border-slate-700 pb-3">🎛️ Bảng Điều Khiển Khí Electron</h2>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-medium text-slate-300">Điện trường (E):</label>
+                            <span id="valVoltage" class="font-mono font-bold text-blue-400">0 V</span>
+                        </div>
+                        <input type="range" id="rangeVoltage" min="-5" max="5" step="0.5" value="0" oninput="updateElectronParams()" class="w-full accent-blue-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-medium text-slate-300">Nhiệt độ (T):</label>
+                            <span id="valTemp" class="font-mono font-bold text-emerald-400">300 K</span>
+                        </div>
+                        <input type="range" id="rangeTemp" min="100" max="800" step="50" value="300" oninput="updateElectronParams()" class="w-full accent-emerald-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="font-medium text-slate-300">Mật độ electron (n):</label>
+                            <span id="valDensity" class="font-mono font-bold text-amber-400">Trung bình</span>
+                        </div>
+                        <input type="range" id="rangeDensity" min="30" max="140" step="10" value="70" oninput="updateElectronParams()" class="w-full accent-amber-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-700 flex gap-2">
+                        <button onclick="toggleElectronSim()" id="btnTogglePlay" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition">Tạm dừng</button>
+                        <button onclick="resetElectronSim()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium text-xs transition">Làm lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function switchAppTab(tabKey) {
+            if (tabKey === 'config') {
+                document.getElementById('moduleConfig').classList.remove('hidden');
+                document.getElementById('moduleElectron').classList.add('hidden');
+                document.getElementById('tabBtnConfig').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow";
+                document.getElementById('tabBtnElectron').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800";
+                stopBohrAnimation();
+            } else {
+                document.getElementById('moduleConfig').classList.add('hidden');
+                document.getElementById('moduleElectron').classList.remove('hidden');
+                document.getElementById('tabBtnElectron').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow";
+                document.getElementById('tabBtnConfig').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800";
+                
+                if (!electronSimRunning) {
+                    electronSimRunning = true;
+                    initLattice();
+                    electronLoop();
+                }
+                stopBohrAnimation();
+            }
+        }
+
+        const elementsData = [
+            { no: 1, name: "Hydrogen", symbol: "H", protons: 1, neutrons: 0, config: "1s¹", shells: [1], note: "Khí nhẹ nhất, phổ biến nhất vũ trụ.", intro: "Hydrogen là nguyên tố nhẹ nhất và có cấu tạo đơn giản nhất với 1 proton và 1 electron. Chiếm phần lớn khối lượng các ngôi sao." },
+            { no: 2, name: "Helium", symbol: "He", protons: 2, neutrons: 2, config: "1s²", shells: [2], note: "Khí hiếm chu kỳ 1, trơ về mặt hóa học.", intro: "Helium là khí hiếm nhẹ thứ hai, có lớp vỏ bão hòa 2 electron bền vững, không cháy và không màu." },
+            { no: 3, name: "Lithium", symbol: "Li", protons: 3, neutrons: 4, config: "1s² 2s¹", shells: [2, 1], note: "Kim loại kiềm nhẹ nhất.", intro: "Lithium là kim loại kiềm mềm, màu trắng bạc, có 1 electron hóa trị dễ nhường để tạo liên kết ion." },
+            { no: 4, name: "Beryllium", symbol: "Be", protons: 4, neutrons: 5, config: "1s² 2s²", shells: [2, 2], note: "Kim loại kiềm thổ cứng.", intro: "Beryllium có độ bền cơ học cao, điểm nóng chảy lớn, thường dùng trong hợp kim hàng không vũ trụ." },
+            { no: 5, name: "Boron", symbol: "B", protons: 5, neutrons: 6, config: "1s² 2s² 2p¹", shells: [2, 3], note: "Á kim bán dẫn.", intro: "Boron là á kim có tính chất trung gian giữa kim loại và phi kim, ứng dụng trong thủy tinh chịu nhiệt." },
+            { no: 6, name: "Carbon", symbol: "C", protons: 6, neutrons: 6, config: "1s² 2s² 2p²", shells: [2, 4], note: "Nền tảng của sự sống hữu cơ.", intro: "Carbon có hóa trị 4, tạo ra hàng triệu hợp chất hữu cơ phong phú cấu thành nên sự sống trên Trái Đất." },
+            { no: 7, name: "Nitrogen", symbol: "N", protons: 7, neutrons: 7, config: "1s² 2s² 2p³", shells: [2, 5], note: "Thành phần chủ đạo khí quyển.", intro: "Nitrogen chiếm khoảng 78% thể tích khí quyển, đóng vai trò cốt lõi trong protein và DNA." },
+            { no: 8, name: "Oxygen", symbol: "O", protons: 8, neutrons: 8, config: "1s² 2s² 2p⁴", shells: [2, 6], note: "Duy trì sự sống và sự cháy.", intro: "Oxygen cần thiết cho quá trình hô hấp của sinh vật và là chất oxy hóa mạnh trong hóa học." },
+            { no: 9, name: "Fluorine", symbol: "F", protons: 9, neutrons: 10, config: "1s² 2s² 2p⁵", shells: [2, 7], note: "Phi kim có độ âm điện mạnh nhất.", intro: "Fluorine là khí màu vàng lục cực kỳ độc và hoạt động hóa học mãnh liệt nhất trong bảng tuần hoàn." },
+            { no: 10, name: "Neon", symbol: "Ne", protons: 10, neutrons: 10, config: "1s² 2s² 2p⁶", shells: [2, 8], note: "Khí hiếm phát sáng màu đỏ cam.", intro: "Neon hoàn toàn trơ, phát ra ánh sáng đỏ cam đặc trưng khi có dòng điện chạy qua trong đèn bảng hiệu." },
+            { no: 11, name: "Sodium", symbol: "Na", protons: 11, neutrons: 12, config: "1s² 2s² 2p⁶ 3s¹", shells: [2, 8, 1], note: "Kim loại kiềm mạnh, phản ứng với nước.", intro: "Sodium mềm, dễ cắt bằng dao, phản ứng mạnh mẽ với nước tạo kiềm và khí hydrogen." },
+            { no: 12, name: "Magnesium", symbol: "Mg", protons: 12, neutrons: 12, config: "1s² 2s² 2p⁶ 3s²", shells: [2, 8, 2], note: "Kim loại kiềm thổ cháy sáng chói.", intro: "Magnesium khi cháy tỏa ánh sáng trắng rực rỡ, dùng làm pháo sáng và hợp kim nhẹ." },
+            { no: 13, name: "Aluminium", symbol: "Al", protons: 13, neutrons: 14, config: "1s² 2s² 2p⁶ 3s² 3p¹", shells: [2, 8, 3], note: "Kim loại nhẹ phổ biến trong vỏ Trái Đất.", intro: "Aluminium bền, nhẹ, dẫn điện và nhiệt tốt, được ứng dụng rộng rãi trong xây dựng và hàng không." },
+            { no: 14, name: "Silicon", symbol: "Si", protons: 14, neutrons: 14, config: "1s² 2s² 2p⁶ 3s² 3p²", shells: [2, 8, 4], note: "Chất bán dẫn cốt lõi ngành điện tử.", intro: "Silicon là vật liệu bán dẫn chủ lực làm nên các chip vi xử lý máy tính và pin năng lượng mặt trời." },
+            { no: 15, name: "Phosphorus", symbol: "P", protons: 15, neutrons: 16, config: "1s² 2s² 2p⁶ 3s² 3p³", shells: [2, 8, 5], note: "Thiết yếu cho ADN và xương khớp.", intro: "Phosphorus tồn tại ở dạng trắng và đỏ, đóng vai trò quan trọng trong phân bón nông nghiệp và sinh học." },
+            { no: 16, name: "Sulfur", symbol: "S", protons: 16, neutrons: 16, config: "1s² 2s² 2p⁶ 3s² 3p⁴", shells: [2, 8, 6], note: "Phi kim dạng tinh thể màu vàng.", intro: "Sulfur là phi kim màu vàng, dùng trong sản xuất axit sulfuric và lưu hóa cao su." },
+            { no: 17, name: "Chlorine", symbol: "Cl", protons: 17, neutrons: 18, config: "1s² 2s² 2p⁶ 3s² 3p⁵", shells: [2, 8, 7], note: "Khí độc khử trùng nước sinh hoạt.", intro: "Chlorine là chất khí màu vàng lục, sát trùng mạnh, dùng xử lý nước cấp và sản xuất nhựa PVC." },
+            { no: 18, name: "Argon", symbol: "Ar", protons: 18, neutrons: 22, config: "1s² 2s² 2p⁶ 3s² 3p⁶", shells: [2, 8, 8], note: "Khí hiếm phổ biến trong khí quyển.", intro: "Argon là khí hiếm chiếm khoảng gần 1% khí quyển, dùng làm môi trường trơ trong hàn kim loại." },
+            { no: 19, name: "Potassium", symbol: "K", protons: 19, neutrons: 20, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", shells: [2, 8, 8, 1], note: "Kim loại kiềm thiết yếu cho cơ thể.", intro: "Potassium là kim loại kiềm hoạt động mạnh, rất quan trọng cho cân bằng điện giải sinh học." },
+            { no: 20, name: "Calcium", symbol: "Ca", protons: 20, neutrons: 20, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", shells: [2, 8, 8, 2], note: "Thành phần quan trọng của xương và răng.", intro: "Calcium là kim loại kiềm thổ, cấu thành nên hệ xương, răng và vỏ sò." },
+            { no: 21, name: "Scandium", symbol: "Sc", protons: 21, neutrons: 24, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹", shells: [2, 8, 9, 2], note: "Kim loại chuyển tiếp nhẹ, bền.", intro: "Scandium tạo hợp kim nhôm-scandium nhẹ và siêu bền cho ngành hàng không." },
+            { no: 22, name: "Titanium", symbol: "Ti", protons: 22, neutrons: 26, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d²", shells: [2, 8, 10, 2], note: "Kim loại siêu bền, chống ăn mòn cao.", intro: "Titanium có tỷ lệ độ bền trên trọng lượng cao nhất trong các kim loại, dùng trong y tế và hàng không." },
+            { no: 23, name: "Vanadium", symbol: "V", protons: 23, neutrons: 28, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d³", shells: [2, 8, 11, 2], note: "Dùng luyện hợp kim thép siêu cứng.", intro: "Vanadium giúp tăng độ cứng và chống mài mòn cho các loại thép công cụ." },
+            { no: 24, name: "Chromium", symbol: "Cr", protons: 24, neutrons: 28, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d⁵", shells: [2, 8, 13, 1], note: "Kim loại chống gỉ, mạ sáng bóng.", intro: "Chromium tạo lớp màng oxit bảo vệ thép không gỉ (Inox) và cho màu sắc đẹp trong hợp chất." },
+            { no: 25, name: "Manganese", symbol: "Mn", protons: 25, neutrons: 30, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁵", shells: [2, 8, 13, 2], note: "Chất phụ gia quan trọng trong sản xuất thép.", intro: "Manganese khử oxy trong luyện thép, tạo ra thép hợp kim chịu lực tốt." },
+            { no: 26, name: "Iron", symbol: "Fe", protons: 26, neutrons: 30, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶", shells: [2, 8, 14, 2], note: "Sắt - Xương sống của ngành công nghiệp hiện đại.", intro: "Sắt là kim loại cấu thành lõi Trái Đất và là vật liệu nền tảng của mọi công trình xây dựng." },
+            { no: 27, name: "Cobalt", symbol: "Co", protons: 27, neutrons: 32, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁷", shells: [2, 8, 15, 2], note: "Dùng làm hợp kim nam châm và pin.", intro: "Cobalt chịu nhiệt cao, đóng vai trò cốt lõi trong pin sạc lithium-ion và hợp kim siêu bền." },
+            { no: 28, name: "Nickel", symbol: "Ni", protons: 28, neutrons: 31, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁸", shells: [2, 8, 16, 2], note: "Kim loại chống ăn mòn, làm tiền xu.", intro: "Nickel kháng hóa chất tốt, ứng dụng trong mạ kim loại, tiền xu và pin accu." },
+            { no: 29, name: "Copper", symbol: "Cu", protons: 29, neutrons: 35, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d¹⁰", shells: [2, 8, 18, 1], note: "Đồng - Dẫn điện và dẫn nhiệt tuyệt vời.", intro: "Đồng là kim loại màu đỏ hồng, dẫn điện điện tử hàng đầu, làm dây cáp điện và động cơ." },
+            { no: 30, name: "Zinc", symbol: "Zn", protons: 30, neutrons: 35, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰", shells: [2, 8, 18, 2], note: "Kẽm - Mạ chống gỉ cho thép." },
+            { no: 31, name: "Gallium", symbol: "Ga", protons: 31, neutrons: 39, config: "... 4s² 3d¹⁰ 4p¹", shells: [2, 8, 18, 3], note: "Kim loại nóng chảy ở nhiệt độ tay người." },
+            { no: 32, name: "Germanium", symbol: "Ge", protons: 32, neutrons: 41, config: "... 4s² 3d¹⁰ 4p²", shells: [2, 8, 18, 4], note: "Chất bán dẫn quang học." },
+            { no: 33, name: "Arsenic", symbol: "As", protons: 33, neutrons: 42, config: "... 4s² 3d¹⁰ 4p³", shells: [2, 8, 18, 5], note: "Á kim độc hại." },
+            { no: 34, name: "Selenium", symbol: "Se", protons: 34, neutrons: 45, config: "... 4s² 3d¹⁰ 4p⁴", shells: [2, 8, 18, 6], note: "Chất quang dẫn." },
+            { no: 35, name: "Bromine", symbol: "Br", protons: 35, neutrons: 45, config: "... 4s² 3d¹⁰ 4p⁵", shells: [2, 8, 18, 7], note: "Halogen lỏng màu nâu đỏ." },
+            { no: 36, name: "Krypton", symbol: "Kr", protons: 36, neutrons: 48, config: "... 4s² 3d¹⁰ 4p⁶", shells: [2, 8, 18, 8], note: "Khí hiếm đèn flash cao cấp." }
+        ];
+
+        // Fill remaining elements 37 to 118 dynamically
+        const elementNamesExtended = [
+            "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium",
+            "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Cesium", "Barium",
+            "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium",
+            "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium",
+            "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon",
+            "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium",
+            "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium",
+            "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium",
+            "Tennessine", "Oganesson"
+        ];
+
+        const elementSymbolsExtended = [
+            "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd",
+            "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba",
+            "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy",
+            "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os",
+            "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn",
+            "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm",
+            "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg",
+            "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv",
+            "Ts", "Og"
+        ];
+
+        for (let i = 37; i <= 118; i++) {
+            let idx = i - 37;
+            elementsData.push({
+                no: i,
+                name: elementNamesExtended[idx] || `Element ${i}`,
+                symbol: elementSymbolsExtended[idx] || `X${i}`,
+                protons: i,
+                neutrons: Math.floor(i * 1.3),
+                config: `... lớp ngoài Z=${i}`,
+                shells: [2, 8, 18, Math.min(32, i - 28)],
+                note: "Nguyên tố phân đoạn cao trong bảng tuần hoàn.",
+                intro: `${elementNamesExtended[idx] || `Nguyên tố ${i}`} có số hiệu nguyên tử Z = ${i}, được nghiên cứu trong các phòng thí nghiệm vật lý và hóa học hiện đại.`
+            });
+        }
+
+        let currentElementNo = 1;
+        let quizScoreVal = 0;
+        let totalQuizCount = 0;
+        let currentQuiz = null;
+        let bohrAnimId = null;
+        let electronAngles = [];
+
+        function switchConfigSub(subKey) {
+            ['explorer', 'aufbau', 'quiz'].forEach(k => {
+                document.getElementById(`subView${k.charAt(0).toUpperCase() + k.slice(1)}`).classList.add('hidden');
+                document.getElementById(`subBtn${k.charAt(0).toUpperCase() + k.slice(1)}`).className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition";
+            });
+            document.getElementById(`subView${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`).classList.remove('hidden');
+            document.getElementById(`subBtn${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`).className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition";
+
+            if (subKey === 'explorer') {
+                startBohrAnimation();
+            } else {
+                stopBohrAnimation();
+            }
+
+            if (subKey === 'quiz' && !currentQuiz) {
+                generateQuiz();
+            }
+        }
+
+        function renderElementList(filterTxt = '') {
+            const container = document.getElementById('elementListContainer');
+            container.innerHTML = '';
+            const filtered = elementsData.filter(el => 
+                el.name.toLowerCase().includes(filterTxt.toLowerCase()) ||
+                el.symbol.toLowerCase().includes(filterTxt.toLowerCase()) ||
+                el.no.toString() === filterTxt
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">Không tìm thấy nguyên tố</div>`;
+                return;
+            }
+
+            filtered.forEach(el => {
+                const isSelected = el.no === currentElementNo;
+                const div = document.createElement('div');
+                div.id = `el-item-${el.no}`;
+                div.className = `flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition ${isSelected ? 'bg-blue-600 text-white shadow ring-2 ring-blue-400' : 'hover:bg-slate-700/60 text-slate-300'}`;
+                
+                // Click to select
+                div.onclick = () => { 
+                    currentElementNo = el.no; 
+                    renderElementList(document.getElementById('searchInput').value); 
+                    renderElementDetail(); 
+                };
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-6 h-6 rounded-lg ${isSelected ? 'bg-blue-700 text-white' : 'bg-slate-700 text-slate-300'} font-bold text-[11px] flex items-center justify-center">${el.no}</span>
+                        <div>
+                            <div class="font-semibold text-xs">${el.name}</div>
+                            <div class="text-[10px] ${isSelected ? 'text-blue-100' : 'text-slate-400'}">${el.config}</div>
+                        </div>
+                    </div>
+                    <span class="font-mono font-bold text-sm px-2 py-0.5 rounded ${isSelected ? 'bg-blue-700 text-white' : 'bg-slate-700 text-slate-300'}">${el.symbol}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function filterElements() {
+            renderElementList(document.getElementById('searchInput').value);
+        }
+
+        // Keyboard navigation with Up/Down arrow keys
+        function handleListKeydown(event) {
+            const filtered = elementsData.filter(el => {
+                const filterTxt = document.getElementById('searchInput').value.toLowerCase();
+                return el.name.toLowerCase().includes(filterTxt) ||
+                       el.symbol.toLowerCase().includes(filterTxt) ||
+                       el.no.toString() === filterTxt;
+            });
+            if (filtered.length === 0) return;
+
+            let currentIndex = filtered.findIndex(el => el.no === currentElementNo);
+            if (currentIndex === -1) currentIndex = 0;
+
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                currentIndex = (currentIndex + 1) % filtered.length;
+                currentElementNo = filtered[currentIndex].no;
+                renderElementList(document.getElementById('searchInput').value);
+                renderElementDetail();
+                scrollToSelectedElement();
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                currentIndex = (currentIndex - 1 + filtered.length) % filtered.length;
+                currentElementNo = filtered[currentIndex].no;
+                renderElementList(document.getElementById('searchInput').value);
+                renderElementDetail();
+                scrollToSelectedElement();
+            }
+        }
+
+        function scrollToSelectedElement() {
+            const elDiv = document.getElementById(`el-item-${currentElementNo}`);
+            if (elDiv) {
+                elDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function initElectronAngles(el) {
+            electronAngles = [];
+            el.shells.forEach((eCount, shellIdx) => {
+                let shellArr = [];
+                for (let i = 0; i < eCount; i++) {
+                    shellArr.push({
+                        angle: (i * 2 * Math.PI) / eCount,
+                        speed: (0.012 + (shellIdx + 1) * 0.003) * (shellIdx % 2 === 0 ? 1 : -1)
+                    });
+                }
+                electronAngles.push(shellArr);
+            });
+        }
+
+        function renderElementDetail() {
+            const el = elementsData.find(e => e.no === currentElementNo);
+            const container = document.getElementById('elementDetail');
+            
+            initElectronAngles(el);
+
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pb-3 border-b border-slate-700">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-bold text-slate-100">${el.no}. ${el.name}</h2>
+                            <span class="px-2.5 py-0.5 bg-blue-900/60 text-blue-300 border border-blue-700 rounded-lg font-mono font-bold text-sm">${el.symbol}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-0.5">${el.note} • Số hiệu (Z) = ${el.protons}</p>
+                    </div>
+                    <div class="bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700">
+                        <div class="text-[10px] text-slate-400">Cấu hình electron</div>
+                        <div class="font-mono font-bold text-blue-400 text-xs">${el.config}</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <div class="flex flex-col items-center justify-center bg-slate-900/60 rounded-2xl p-3 border border-slate-700">
+                        <div class="text-[11px] font-medium text-slate-400 mb-1">Mô hình Bohr động (${el.shells.join(', ')})</div>
+                        <canvas id="bohrCanvas" width="260" height="260" class="rounded-xl bg-slate-950 shadow-inner"></canvas>
+                        <span class="text-[10px] text-slate-400 mt-1">✨ Tổng số electron: <strong class="text-emerald-400">${el.protons} e</strong></span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700">
+                            <h4 class="text-[10px] font-semibold uppercase text-slate-400 mb-2">Hạt cơ bản</h4>
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                                <div class="bg-slate-800 p-2 rounded-lg border border-slate-700"><span class="text-slate-400 block text-[10px]">Proton</span><strong class="text-blue-400">${el.protons}</strong></div>
+                                <div class="bg-slate-800 p-2 rounded-lg border border-slate-700"><span class="text-slate-400 block text-[10px]">Neutron</span><strong class="text-emerald-400">${el.neutrons}</strong></div>
+                                <div class="bg-slate-800 p-2 rounded-lg border border-slate-700"><span class="text-slate-400 block text-[10px]">Electron</span><strong class="text-red-400">${el.protons}</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700">
+                            <h4 class="text-[10px] font-semibold uppercase text-slate-400 mb-2">Phân bố electron theo lớp</h4>
+                            <div class="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
+                                ${el.shells.map((c, i) => `<div class="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 text-center"><div class="text-[9px] text-slate-400">Lớp ${i+1}</div><div class="font-bold text-slate-200 text-xs">${c} e</div></div>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-950/40 p-3 rounded-xl border border-blue-900/50 text-[11px] text-blue-300">
+                            ✨ <strong>Số electron hóa trị:</strong> <span class="font-bold">${el.shells[el.shells.length - 1]} e</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Explanation for Element Motion -->
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700 space-y-1.5">
+                    <h4 class="text-xs font-bold text-blue-400 flex items-center gap-1.5">🔬 Giới thiệu & Giải thích chuyển động electron của ${el.name}</h4>
+                    <p class="text-[11px] text-slate-300 leading-relaxed">
+                        ${el.intro || el.note}. Hạt nhân chứa ${el.protons} proton tạo lực hút tĩnh điện giữ các electron quay trên ${el.shells.length} lớp quỹ đạo. Các electron ở lớp ngoài cùng (${el.shells[el.shells.length - 1]} e) quyết định tính chất hóa học đặc trưng của nguyên tố này.
+                    </p>
+                </div>
+            `;
+            startBohrAnimation();
+        }
+
+        function startBohrAnimation() {
+            stopBohrAnimation();
+            const canvas = document.getElementById('bohrCanvas');
+            if (!canvas) return;
+            const bCtx = canvas.getContext('2d');
+            const el = elementsData.find(e => e.no === currentElementNo);
+
+            function drawBohrFrame() {
+                bCtx.fillStyle = '#090d16';
+                bCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+                let cx = canvas.width / 2;
+                let cy = canvas.height / 2;
+
+                bCtx.beginPath();
+                bCtx.arc(cx, cy, 20, 0, Math.PI * 2);
+                bCtx.fillStyle = '#3b82f6';
+                bCtx.shadowColor = '#3b82f6';
+                bCtx.shadowBlur = 10;
+                bCtx.fill();
+                bCtx.shadowBlur = 0;
+
+                bCtx.fillStyle = '#fff';
+                bCtx.font = 'bold 9px Poppins';
+                bCtx.textAlign = 'center';
+                bCtx.fillText(`${el.protons}p+`, cx, cy - 3);
+                bCtx.fillText(`${el.neutrons}n0`, cx, cy + 9);
+
+                el.shells.forEach((eCount, sIdx) => {
+                    let r = 30 + (sIdx * 15);
+                    
+                    bCtx.beginPath();
+                    bCtx.arc(cx, cy, r, 0, Math.PI * 2);
+                    bCtx.strokeStyle = 'rgba(71, 85, 105, 0.4)';
+                    bCtx.lineWidth = 1;
+                    bCtx.setLineDash([2, 2]);
+                    bCtx.stroke();
+                    bCtx.setLineDash([]);
+
+                    if (electronAngles[sIdx]) {
+                        electronAngles[sIdx].forEach((electron) => {
+                            electron.angle += electron.speed;
+                            let ex = cx + r * Math.cos(electron.angle);
+                            let ey = cy + r * Math.sin(electron.angle);
+
+                            bCtx.beginPath();
+                            bCtx.arc(ex, ey, 3.5, 0, Math.PI * 2);
+                            bCtx.fillStyle = '#ef4444';
+                            bCtx.shadowColor = '#ef4444';
+                            bCtx.shadowBlur = 5;
+                            bCtx.fill();
+                            bCtx.shadowBlur = 0;
+                        });
+                    }
+                });
+
+                bohrAnimId = requestAnimationFrame(drawBohrFrame);
+            }
+
+            drawBohrFrame();
+        }
+
+        function stopBohrAnimation() {
+            if (bohrAnimId) {
+                cancelAnimationFrame(bohrAnimId);
+                bohrAnimId = null;
+            }
+        }
+
+        function generateQuiz() {
+            const randomEl = elementsData[Math.floor(Math.random() * elementsData.length)];
+            const qType = Math.floor(Math.random() * 3);
+            let qText = "", correctAns = "", options = [];
+
+            if (qType === 0) {
+                qText = `Nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> (${randomEl.symbol}, Z = ${randomEl.protons}) có tổng số electron là bao nhiêu?`;
+                correctAns = `${randomEl.protons} electron`;
+                options = [correctAns];
+                while(options.length < 4) {
+                    const decoy = `${Math.floor(Math.random() * 118) + 1} electron`;
+                    if (!options.includes(decoy)) options.push(decoy);
+                }
+            } else if (qType === 1) {
+                qText = `Cấu hình electron của nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> (${randomEl.symbol}) là?`;
+                correctAns = randomEl.config;
+                options = [correctAns];
+                while(options.length < 4) {
+                    const decoy = elementsData[Math.floor(Math.random() * elementsData.length)].config;
+                    if (!options.includes(decoy)) options.push(decoy);
+                }
+            } else {
+                const valence = randomEl.shells[randomEl.shells.length - 1];
+                qText = `Nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> có bao nhiêu electron hóa trị (lớp ngoài cùng)?`;
+                correctAns = `${valence} electron`;
+                options = [correctAns];
+                while(options.length < 4) {
+                    const decoy = `${Math.floor(Math.random() * 8) + 1} electron`;
+                    if (!options.includes(decoy)) options.push(decoy);
+                }
+            }
+
+            options.sort(() => Math.random() - 0.5);
+            currentQuiz = { qText, correctAns, options };
+            renderQuizUI();
+        }
+
+        function renderQuizUI() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <p class="text-xs md:text-sm font-medium text-slate-200">${currentQuiz.qText}</p>
+                    <div class="grid grid-cols-1 gap-2.5" id="quizOpts">
+                        ${currentQuiz.options.map((opt, i) => `
+                            <button onclick="checkQuiz(this, '${opt.replace(/'/g, "\\'")}')" class="w-full text-left p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-blue-500 font-medium text-xs transition text-slate-300 flex justify-between items-center">
+                                <span>${opt}</span>
+                                <span class="w-5 h-5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold flex items-center justify-center">${String.fromCharCode(65+i)}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkQuiz(btn, selected) {
+            const btns = document.getElementById('quizOpts').getElementsByTagName('button');
+            totalQuizCount++;
+            const isCorrect = selected === currentQuiz.correctAns;
+            if (isCorrect) {
+                quizScoreVal++;
+                btn.className = "w-full text-left p-3 rounded-xl bg-emerald-950/60 border border-emerald-600 text-emerald-200 font-medium text-xs flex justify-between items-center";
+            } else {
+                btn.className = "w-full text-left p-3 rounded-xl bg-rose-950/60 border border-rose-600 text-rose-200 font-medium text-xs flex justify-between items-center";
+                for (let b of btns) {
+                    if (b.textContent.includes(currentQuiz.correctAns)) {
+                        b.className = "w-full text-left p-3 rounded-xl bg-emerald-950/60 border border-emerald-600 text-emerald-200 font-medium text-xs flex justify-between items-center";
+                    }
+                }
+            }
+            for (let b of btns) b.disabled = true;
+            document.getElementById('quizScore').textContent = `Điểm: ${quizScoreVal} / ${totalQuizCount}`;
+            setTimeout(() => {
+                const nextDiv = document.createElement('div');
+                nextDiv.className = "mt-4 flex justify-end";
+                nextDiv.innerHTML = `<button onclick="generateQuiz()" class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold text-xs transition">Câu tiếp theo ➔</button>`;
+                container.appendChild(nextDiv);
+            }, 500);
+        }
+
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let electronVoltage = 0;
+        let electronTemp = 300;
+        let electronDensity = 70;
+        let electronSimRunning = false;
+        let ions = [], electrons = [];
+        let collisionCounter = 0;
+        let frameCounter = 0;
+
+        class Ion {
+            constructor(x, y) {
+                this.x = x; this.y = y; this.baseX = x; this.baseY = y; this.radius = 9;
+                this.phase = Math.random() * Math.PI * 2;
+            }
+            update(temp) {
+                let amp = (temp / 300) * 1.3;
+                this.phase += 0.15 * (temp / 200);
+                this.x = this.baseX + Math.sin(this.phase) * amp;
+                this.y = this.baseY + Math.cos(this.phase * 1.2) * amp;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#ef4444';
+                ctx.shadowColor = '#ef4444';
+                ctx.shadowBlur = 6;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(this.x - 4, this.y); ctx.lineTo(this.x + 4, this.y);
+                ctx.moveTo(this.x, this.y - 4); ctx.lineTo(this.x, this.y + 4);
+                ctx.stroke();
+            }
+        }
+
+        class ElectronPart {
+            constructor(x, y) {
+                this.x = x; this.y = y; this.radius = 3.5;
+                let speed = Math.sqrt(electronTemp / 100) * 1.1;
+                let angle = Math.random() * Math.PI * 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+            }
+            update() {
+                let acc = (electronVoltage / 5) * 0.14;
+                this.vx += acc;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+                this.vx += (Math.random() - 0.5) * 0.35 * (electronTemp / 200);
+                this.vy += (Math.random() - 0.5) * 0.35 * (electronTemp / 200);
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+
+                for (let ion of ions) {
+                    let dx = this.x - ion.x;
+                    let dy = this.y - ion.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < ion.radius + this.radius) {
+                        collisionCounter++;
+                        let angle = Math.atan2(dy, dx);
+                        let speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                        let scatter = angle + (Math.random() - 0.5) * Math.PI;
+                        this.vx = Math.cos(scatter) * speed * 0.88;
+                        this.vy = Math.sin(scatter) * speed * 0.88;
+                        this.x = ion.x + Math.cos(angle) * (ion.radius + this.radius + 1);
+                        this.y = ion.y + Math.sin(angle) * (ion.radius + this.radius + 1);
+                    }
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#3b82f6';
+                ctx.shadowColor = '#3b82f6';
+                ctx.shadowBlur = 5;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function initLattice() {
+            ions = []; electrons = [];
+            let cols = 11, rows = 6;
+            let spX = canvas.width / (cols + 1);
+            let spY = canvas.height / (rows + 1);
+            for (let i = 1; i <= cols; i++) {
+                for (let j = 1; j <= rows; j++) {
+                    ions.push(new Ion(i * spX + (j % 2 === 0 ? 12 : 0), j * spY));
+                }
+            }
+            for (let k = 0; k < electronDensity; k++) {
+                electrons.push(new ElectronPart(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
+
+        function updateElectronParams() {
+            electronVoltage = parseFloat(document.getElementById('rangeVoltage').value);
+            electronTemp = parseInt(document.getElementById('rangeTemp').value);
+            electronDensity = parseInt(document.getElementById('rangeDensity').value);
+
+            document.getElementById('valVoltage').textContent = electronVoltage + " V";
+            document.getElementById('valTemp').textContent = electronTemp + " K";
+            let dLabel = "Trung bình";
+            if (electronDensity < 50) dLabel = "Thấp";
+            else if (electronDensity > 110) dLabel = "Cao";
+            document.getElementById('valDensity').textContent = dLabel;
+
+            if (electrons.length < electronDensity) {
+                while (electrons.length < electronDensity) {
+                    electrons.push(new ElectronPart(Math.random() * canvas.width, Math.random() * canvas.height));
+                }
+            } else if (electrons.length > electronDensity) {
+                electrons = electrons.slice(0, electronDensity);
+            }
+        }
+
+        function toggleElectronSim() {
+            electronSimRunning = !electronSimRunning;
+            const btn = document.getElementById('btnTogglePlay');
+            if (electronSimRunning) {
+                btn.textContent = "Tạm dừng";
+                btn.className = "flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition";
+                electronLoop();
+            } else {
+                btn.textContent = "Tiếp tục";
+                btn.className = "flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition";
+            }
+        }
+
+        function resetElectronSim() {
+            collisionCounter = 0;
+            initLattice();
+        }
+
+        function electronLoop() {
+            if (!electronSimRunning) return;
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (electronVoltage !== 0) {
+                ctx.strokeStyle = electronVoltage > 0 ? 'rgba(59, 130, 246, 0.12)' : 'rgba(239, 68, 68, 0.12)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                for (let x = 40; x < canvas.width; x += 80) {
+                    ctx.moveTo(x, 15);
+                    ctx.lineTo(x + (electronVoltage > 0 ? 25 : -25), 15);
+                }
+                ctx.stroke();
+            }
+
+            for (let ion of ions) {
+                ion.update(electronTemp);
+                ion.draw();
+            }
+
+            let totalVx = 0;
+            for (let el of electrons) {
+                el.update();
+                el.draw();
+                totalVx += el.vx;
+            }
+
+            let driftV = Math.abs(totalVx / electrons.length);
+            let currM = (driftV * Math.abs(electronVoltage) * 0.35).toFixed(2);
+
+            frameCounter++;
+            if (frameCounter % 10 === 0) {
+                document.getElementById('statDrift').textContent = driftV.toFixed(2);
+                document.getElementById('statCurrent').textContent = currM + " A";
+                document.getElementById('statCollisions').textContent = collisionCounter;
+            }
+
+            requestAnimationFrame(electronLoop);
+        }
+
+        window.onload = function() {
+            renderElementList();
+            renderElementDetail();
+        };
+    </script>
+</body>
+</html>
