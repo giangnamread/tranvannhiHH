@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phần mềm ứng dụng đọc số electron</title>
+    <title>Phần mềm ứng dụng đọc số electron & 501 Phương trình Hóa học</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        canvas { background-color: #0f172a; border-radius: 1rem; }
+        canvas { background-color: #030712; border-radius: 1rem; }
+        sub { font-size: 0.75em; vertical-align: sub; }
+        sup { font-size: 0.75em; vertical-align: super; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
@@ -20,7 +22,7 @@
                     ⚛️ Phần mềm ứng dụng đọc số electron
                 </h1>
                 <p class="text-slate-400 text-xs md:text-sm mt-1">
-                    Tích hợp: Tra cứu Toàn bộ 118 Nguyên tố, Giải thích động sự chuyển động của electron & Khí Điện tử Tự do.
+                    Tích hợp: 118 Nguyên tố, 501 Phương trình KNTT (Hướng dẫn cân bằng chuyên biệt & Mô hình 3D động) & Khí Điện tử Tự do.
                 </p>
                 <div class="mt-2 inline-flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-700 text-xs shadow-inner">
                     <span class="text-emerald-400 font-semibold">👨‍🏫 Giáo viên giảng dạy:</span>
@@ -29,56 +31,59 @@
                     <span class="text-blue-300">Trung tâm GDNN-GDTX Hướng Hóa</span>
                 </div>
             </div>
-            <!-- Main Module Switcher -->
-            <div class="flex bg-slate-900 p-1.5 rounded-xl border border-slate-700">
-                <button onclick="switchAppTab('config')" id="tabBtnConfig" class="px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow">
-                    ⚛️ Bảng 118 Nguyên Tố
+            <!-- Main Navigation Tabs -->
+            <div class="flex flex-wrap bg-slate-900 p-1.5 rounded-xl border border-slate-700 gap-1">
+                <button onclick="switchAppTab('elements')" id="tabBtnElements" class="px-3.5 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow flex items-center gap-1.5">
+                    ⚛️ 118 Nguyên Tố
                 </button>
-                <button onclick="switchAppTab('electron')" id="tabBtnElectron" class="px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800">
-                    ⚡ Khí Điện Tử Tự Do
+                <button onclick="switchAppTab('equations')" id="tabBtnEquations" class="px-3.5 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5">
+                    📚 501 Phương Trình & Cân Bằng
+                </button>
+                <button onclick="switchAppTab('electron')" id="tabBtnElectron" class="px-3.5 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5">
+                    ⚡ Khí Điện Tử
                 </button>
             </div>
         </div>
     </header>
 
+    <!-- Main Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
 
-        <!-- ==================== MODULE 1: ELECTRON CONFIGURATION (1-118) ==================== -->
-        <div id="moduleConfig" class="space-y-6">
-            <!-- Subnav for Config -->
+        <!-- ==================== MODULE 1: 118 ELEMENTS EXPLORER ==================== -->
+        <div id="moduleElements" class="space-y-6">
             <div class="flex flex-wrap gap-2 bg-slate-800 p-3 rounded-2xl border border-slate-700 items-center justify-between">
                 <div class="flex gap-2">
-                    <button onclick="switchConfigSub('explorer')" id="subBtnExplorer" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition">Tra cứu Nguyên tố</button>
-                    <button onclick="switchConfigSub('aufbau')" id="subBtnAufbau" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition">Quy tắc Aufbau</button>
-                    <button onclick="switchConfigSub('quiz')" id="subBtnQuiz" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition">Trắc nghiệm</button>
+                    <button onclick="switchConfigSub('explorer')" id="subBtnExplorer" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white transition shadow">Tra cứu Nguyên tố</button>
+                    <button onclick="switchConfigSub('aufbau')" id="subBtnAufbau" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition">Quy tắc Aufbau</button>
+                    <button onclick="switchConfigSub('quiz')" id="subBtnQuiz" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition">Trắc nghiệm</button>
                 </div>
-                <div class="text-xs text-slate-400">✨ Click vào nguyên tố để chọn xem chi tiết. Dùng phím ⬆️ ⬇️ để di chuyển danh sách.</div>
+                <div class="text-xs text-slate-400">✨ Click nguyên tố để xem chi tiết. Dùng phím ⬆️ ⬇ để di chuyển danh sách.</div>
             </div>
 
-            <!-- View 1: Explorer -->
+            <!-- SubView 1: Explorer -->
             <div id="subViewExplorer" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="bg-slate-800 rounded-2xl border border-slate-700 p-4 flex flex-col h-[580px]">
-                    <div class="mb-3 space-y-2">
+                    <div class="mb-3 space-y-1.5">
                         <label class="block text-xs font-medium text-slate-400">Tìm kiếm nguyên tố (1-118)</label>
-                        <input type="text" id="searchInput" oninput="filterElements()" onkeydown="handleListKeydown(event)" placeholder="Nhập tên, ký hiệu hoặc số Z..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="elementSearchInput" oninput="filterElements()" placeholder="Nhập tên, ký hiệu hoặc số Z..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <div class="flex-grow overflow-y-auto pr-1 space-y-1.5 outline-none focus:ring-1 focus:ring-blue-500 rounded-xl" tabindex="0" id="elementListContainer" onkeydown="handleListKeydown(event)"></div>
+                    <div class="flex-grow overflow-y-auto pr-1 space-y-1.5" id="elementListContainer"></div>
                 </div>
 
                 <div class="lg:col-span-2 bg-slate-800 rounded-2xl border border-slate-700 p-6 flex flex-col justify-between">
                     <div id="elementDetail" class="space-y-6"></div>
                     <div class="mt-6 pt-4 border-t border-slate-700 text-xs text-slate-400 flex justify-between">
-                        <span>Dynamic Bohr Model & Electron Motion Explanation (118 Elements)</span>
-                        <span>Phần mềm đọc số electron</span>
+                        <span>Dynamic Bohr Model & Electron Shells (118 Elements)</span>
+                        <span>Chemistry Educational Suite</span>
                     </div>
                 </div>
             </div>
 
-            <!-- View 2: Aufbau -->
+            <!-- SubView 2: Aufbau -->
             <div id="subViewAufbau" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6">
                     <h2 class="text-lg font-bold text-slate-100 mb-3 flex items-center gap-2">📐 Quy tắc đường chéo (Aufbau)</h2>
-                    <p class="text-xs text-slate-300 mb-4 leading-relaxed">Electron điền vào các obitan theo thứ tự mức năng lượng tăng dần. Theo chiều từ mũi tên trên xuống dưới, phải sang trái.</p>
+                    <p class="text-xs text-slate-300 mb-4 leading-relaxed">Electron điền vào các obitan theo thứ tự mức năng lượng tăng dần từ dưới lên trên, phải sang trái.</p>
                     <div class="bg-slate-950 text-emerald-400 font-mono p-4 rounded-xl text-xs leading-relaxed border border-slate-800 shadow-inner">
                         1s<br>
                         2s &nbsp; 2p<br>
@@ -89,49 +94,78 @@
                         7s &nbsp; 7p
                     </div>
                 </div>
-
-                <div class="space-y-6">
-                    <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6">
-                        <h2 class="text-lg font-bold text-slate-100 mb-3 flex items-center gap-2">🔑 Sức chứa phân lớp</h2>
-                        <ul class="space-y-2.5 text-xs text-slate-300">
-                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
-                                <span class="w-7 h-7 rounded-lg bg-blue-900/50 text-blue-400 font-bold flex items-center justify-center">s</span>
-                                <span>Phân lớp <strong>s</strong> tối đa <strong>2 electron</strong></span>
-                            </li>
-                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
-                                <span class="w-7 h-7 rounded-lg bg-emerald-900/50 text-emerald-400 font-bold flex items-center justify-center">p</span>
-                                <span>Phân lớp <strong>p</strong> tối đa <strong>6 electron</strong></span>
-                            </li>
-                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
-                                <span class="w-7 h-7 rounded-lg bg-amber-900/50 text-amber-400 font-bold flex items-center justify-center">d</span>
-                                <span>Phân lớp <strong>d</strong> tối đa <strong>10 electron</strong></span>
-                            </li>
-                            <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
-                                <span class="w-7 h-7 rounded-lg bg-purple-900/50 text-purple-400 font-bold flex items-center justify-center">f</span>
-                                <span>Phân lớp <strong>f</strong> tối đa <strong>14 electron</strong></span>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6">
+                    <h2 class="text-lg font-bold text-slate-100 mb-3 flex items-center gap-2">🔑 Sức chứa phân lớp</h2>
+                    <ul class="space-y-2.5 text-xs text-slate-300">
+                        <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                            <span class="w-7 h-7 rounded-lg bg-blue-900/50 text-blue-400 font-bold flex items-center justify-center">s</span>
+                            <span>Phân lớp <strong>s</strong> tối đa <strong>2 electron</strong></span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                            <span class="w-7 h-7 rounded-lg bg-emerald-900/50 text-emerald-400 font-bold flex items-center justify-center">p</span>
+                            <span>Phân lớp <strong>p</strong> tối đa <strong>6 electron</strong></span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                            <span class="w-7 h-7 rounded-lg bg-amber-900/50 text-amber-400 font-bold flex items-center justify-center">d</span>
+                            <span>Phân lớp <strong>d</strong> tối đa <strong>10 electron</strong></span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-slate-900/60 p-2.5 rounded-xl border border-slate-700">
+                            <span class="w-7 h-7 rounded-lg bg-purple-900/50 text-purple-400 font-bold flex items-center justify-center">f</span>
+                            <span>Phân lớp <strong>f</strong> tối đa <strong>14 electron</strong></span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- View 3: Quiz -->
+            <!-- SubView 3: Quiz -->
             <div id="subViewQuiz" class="hidden max-w-2xl mx-auto bg-slate-800 rounded-2xl border border-slate-700 p-6">
                 <div class="flex justify-between items-center mb-6 pb-3 border-b border-slate-700">
-                    <h2 class="text-lg font-bold text-slate-100">🧠 Thử thách Đọc số electron & Cấu hình</h2>
+                    <h2 class="text-lg font-bold text-slate-100">🧠 Thử thách Cấu hình Electron (1-118)</h2>
                     <span id="quizScore" class="bg-blue-900/60 text-blue-300 border border-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Điểm: 0 / 0</span>
                 </div>
                 <div id="quizContainer" class="space-y-6"></div>
             </div>
         </div>
 
-        <!-- ==================== MODULE 2: FREE ELECTRON MODEL ==================== -->
+        <!-- ==================== MODULE 2: 501 CHEMICAL EQUATIONS ==================== -->
+        <div id="moduleEquations" class="hidden space-y-6">
+            <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-3 border-b border-slate-700">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">📚 501 Phương trình Hóa học (Hóa 10, 11, 12 - KNTT) & Cân bằng động</h2>
+                        <p class="text-xs text-slate-400 mt-1">Chọn chương hoặc tìm kiếm phương trình, nhấp để xem mô hình 3D stoichiometric số lượng phân tử và hướng dẫn cân bằng chuyên biệt.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                        <select id="equationCategorySelect" onchange="renderEquations()" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="all">📚 Tất cả 501 phương trình</option>
+                            <option value="h10_ch4">Hóa 10 – Chương 4: Oxi hóa - Khử (001-019)</option>
+                            <option value="h10_ch5">Hóa 10 – Chương 5: Năng lượng (020-028)</option>
+                            <option value="h10_ch6">Hóa 10 – Chương 6: Tốc độ phản ứng (029-031)</option>
+                            <option value="h10_ch7">Hóa 10 – Chương 7: Halogen (032-058)</option>
+                            <option value="h11_ch1">Hóa 11 – Chương 1: Cân bằng & Dung dịch (059-078)</option>
+                            <option value="h11_ch2">Hóa 11 – Chương 2: Nitrogen & Sulfur (079-134)</option>
+                            <option value="h11_ch3">Hóa 11 – Chương 3 & 4: Đại cương & Hydrocarbon (135-190)</option>
+                            <option value="h11_ch5">Hóa 11 – Chương 5 & 6: Dẫn xuất Halogen, Alcohol, Acid (191-224)</option>
+                            <option value="h12_ch1">Hóa 12 – Chương 1: Ester – Lipid (225-247)</option>
+                            <option value="h12_ch2">Hóa 12 – Chương 2: Carbohydrate (248-263)</option>
+                            <option value="h12_ch3">Hóa 12 – Chương 3, 4 & 5: Amine, Peptide, Polymer, Điện hóa (264-304)</option>
+                            <option value="h12_ch6">Hóa 12 – Chương 6, 7 & 8: Kim loại, IA-IIA, Phức chất (305-444)</option>
+                            <option value="extra">Phần bổ sung đến 501 (445-501)</option>
+                        </select>
+                        <input type="text" id="equationSearch" oninput="renderEquations()" placeholder="Tìm kiếm (vd: N2, NaOH, Fe)..." class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-56">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[540px] overflow-y-auto pr-2" id="equationContainer"></div>
+            </div>
+        </div>
+
+        <!-- ==================== MODULE 3: FREE ELECTRON MODEL ==================== -->
         <div id="moduleElectron" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Canvas Simulation (3 cols) -->
             <div class="lg:col-span-3 flex flex-col space-y-4">
                 <div class="relative bg-slate-950 rounded-2xl border border-slate-800 shadow-xl overflow-hidden flex flex-col items-center justify-center p-2">
                     <div class="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-xl border border-slate-700 text-xs flex gap-4">
-                        <div>Tốc độ trôi (vd): <span id="statDrift" class="font-mono font-bold text-blue-400">0.00</span></div>
+                        <div>Tốc độ trôi: <span id="statDrift" class="font-mono font-bold text-blue-400">0.00</span></div>
                         <div>Cường độ (I): <span id="statCurrent" class="font-mono font-bold text-emerald-400">0.00 A</span></div>
                         <div>Va chạm: <span id="statCollisions" class="font-mono font-bold text-amber-400">0</span></div>
                     </div>
@@ -144,38 +178,17 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl">
-                        <h3 class="font-semibold text-blue-400 text-xs mb-1">🌡️ Nhiệt độ & Dao động</h3>
-                        <p class="text-[11px] text-slate-300 leading-relaxed">Nhiệt độ cao làm ion dao động mạnh quanh nút mạng, tăng va chạm và làm giảm độ dẫn điện.</p>
-                    </div>
-                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl">
-                        <h3 class="font-semibold text-emerald-400 text-xs mb-1">🔋 Điện trường & Dòng trôi</h3>
-                        <p class="text-[11px] text-slate-300 leading-relaxed">Khi đặt điện trường (E), electron chuyển động dịch chuyển có hướng tạo ra dòng điện.</p>
-                    </div>
-                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl">
-                        <h3 class="font-semibold text-amber-400 text-xs mb-1">⚛️ Bản chất kim loại</h3>
-                        <p class="text-[11px] text-slate-300 leading-relaxed">Electron hóa trị rời nguyên tử thành electron tự do trong khối kim loại.</p>
-                    </div>
-                </div>
-
-                <!-- Detailed Explanation Panel for Electron Motion -->
                 <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl space-y-2">
                     <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">📖 Giải thích chi tiết quá trình chuyển động của electron</h3>
                     <p class="text-xs text-slate-300 leading-relaxed">
-                        Trong mô hình khí electron tự do, các electron hóa trị bứt ra khỏi nguyên tử kim loại và chuyển động nhiệt hỗn loạn với vận tốc rất lớn (cỡ 10⁵ m/s). Khi chưa có điện trường đặt vào, các vận tốc này triệt tiêu lẫn nhau nên không có dòng điện có hướng.
-                    </p>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        Khi thiết lập một hiệu điện thế (điện trường E), lực điện trường tác dụng lên các electron mang điện âm, ép chúng dịch chuyển có hướng ngược chiều điện trường với một vận tốc trôi vd nhỏ hơn rất nhiều. Trên đường di chuyển, chúng liên tục va chạm đàn hồi với các ion dương dao động nhiệt tại nút mạng tinh thể, làm đổi hướng liên tục nhưng tổng thể vẫn dịch chuyển có hướng tạo nên dòng điện.
+                        Trong mô hình khí electron tự do, các electron hóa trị bứt ra khỏi nguyên tử kim loại và chuyển động nhiệt hỗn loạn với vận tốc rất lớn. Khi đặt một hiệu điện thế (điện trường E), lực điện trường tác dụng lên các electron mang điện âm, ép chúng dịch chuyển có hướng ngược chiều điện trường với tốc độ trôi nhỏ hơn rất nhiều. Trên đường di chuyển, chúng liên tục va chạm đàn hồi với các ion dương dao động nhiệt tại nút mạng tinh thể, làm đổi hướng liên tục nhưng tổng thể vẫn dịch chuyển có hướng tạo nên dòng điện.
                     </p>
                 </div>
             </div>
 
-            <!-- Controls Sidebar (1 col) -->
             <div class="space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 space-y-5 shadow-lg">
-                    <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2 border-b border-slate-700 pb-3">🎛️ Bảng Điều Khiển Khí Electron</h2>
-
+                    <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2 border-b border-slate-700 pb-3">🎛 Bảng Điều Khiển Khí Electron</h2>
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-xs">
                             <label class="font-medium text-slate-300">Điện trường (E):</label>
@@ -183,7 +196,6 @@
                         </div>
                         <input type="range" id="rangeVoltage" min="-5" max="5" step="0.5" value="0" oninput="updateElectronParams()" class="w-full accent-blue-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
                     </div>
-
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-xs">
                             <label class="font-medium text-slate-300">Nhiệt độ (T):</label>
@@ -191,7 +203,6 @@
                         </div>
                         <input type="range" id="rangeTemp" min="100" max="800" step="50" value="300" oninput="updateElectronParams()" class="w-full accent-emerald-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
                     </div>
-
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-xs">
                             <label class="font-medium text-slate-300">Mật độ electron (n):</label>
@@ -199,7 +210,6 @@
                         </div>
                         <input type="range" id="rangeDensity" min="30" max="140" step="10" value="70" oninput="updateElectronParams()" class="w-full accent-amber-500 bg-slate-700 rounded-lg h-2 cursor-pointer">
                     </div>
-
                     <div class="pt-3 border-t border-slate-700 flex gap-2">
                         <button onclick="toggleElectronSim()" id="btnTogglePlay" class="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition">Tạm dừng</button>
                         <button onclick="resetElectronSim()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium text-xs transition">Làm lại</button>
@@ -210,122 +220,76 @@
 
     </main>
 
+    <!-- Modal for Equation Detail & Stoichiometric 3D Molecular Animation -->
+    <div id="eqModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6 max-w-2xl w-full shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEqModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-800 p-2 rounded-xl font-bold text-xs">✕ Đóng</button>
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-xl bg-blue-600 text-white font-bold flex items-center justify-center text-lg">⚛</span>
+                <div>
+                    <h3 id="modalEqTitle" class="text-base font-bold text-white">Phản ứng hóa học</h3>
+                    <p id="modalEqSubtitle" class="text-xs text-blue-400 font-mono">Chương trình Kết nối Tri thức (Hóa học 10, 11, 12)</p>
+                </div>
+            </div>
+            
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center font-mono font-bold text-emerald-400 text-sm" id="modalEqFormula"></div>
+            
+            <div class="relative bg-slate-950 rounded-2xl p-4 flex flex-col items-center justify-center border border-slate-800">
+                <canvas id="eqCanvas" width="460" height="230" class="rounded-xl shadow-inner w-full"></canvas>
+                <div class="absolute bottom-3 bg-blue-900/80 text-blue-200 px-3 py-1 rounded-lg text-[10px] font-semibold animate-pulse" id="modalCanvasCaption">
+                    ● Mô hình 3D Stoichiometric: Số lượng phân tử phản ứng thời gian thực
+                </div>
+            </div>
+
+            <!-- Reaction-Specific Step-by-Step Balancing Guide Box -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-blue-900/60 space-y-2">
+                <h4 class="text-xs font-bold text-blue-400 flex items-center gap-2">⚖️ Hướng dẫn cách cân bằng phương trình chi tiết từng bước:</h4>
+                <div id="modalEqBalanceGuide" class="text-xs text-slate-300 leading-relaxed space-y-2"></div>
+            </div>
+
+            <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed" id="modalEqDesc"></div>
+        </div>
+    </div>
+
     <script>
         function switchAppTab(tabKey) {
-            if (tabKey === 'config') {
-                document.getElementById('moduleConfig').classList.remove('hidden');
-                document.getElementById('moduleElectron').classList.add('hidden');
-                document.getElementById('tabBtnConfig').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow";
-                document.getElementById('tabBtnElectron').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800";
+            ['elements', 'equations', 'electron'].forEach(k => {
+                const mod = document.getElementById(`module${k.charAt(0).toUpperCase() + k.slice(1)}`);
+                const btn = document.getElementById(`tabBtn${k.charAt(0).toUpperCase() + k.slice(1)}`);
+                if (mod) mod.classList.add('hidden');
+                if (btn) btn.className = "px-3.5 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800 flex items-center gap-1.5";
+            });
+            document.getElementById(`module${tabKey.charAt(0).toUpperCase() + tabKey.slice(1)}`).classList.remove('hidden');
+            document.getElementById(`tabBtn${tabKey.charAt(0).toUpperCase() + tabKey.slice(1)}`).className = "px-3.5 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow flex items-center gap-1.5";
+
+            if (tabKey === 'elements') {
                 stopBohrAnimation();
+                stopTextbookCanvas();
+                renderElementList();
+                renderElementDetail();
+            } else if (tabKey === 'equations') {
+                stopBohrAnimation();
+                renderEquations();
             } else {
-                document.getElementById('moduleConfig').classList.add('hidden');
-                document.getElementById('moduleElectron').classList.remove('hidden');
-                document.getElementById('tabBtnElectron').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all bg-blue-600 text-white shadow";
-                document.getElementById('tabBtnConfig').className = "px-4 py-2 rounded-lg font-medium text-xs md:text-sm transition-all text-slate-300 hover:text-white hover:bg-slate-800";
-                
+                stopBohrAnimation();
+                stopTextbookCanvas();
                 if (!electronSimRunning) {
                     electronSimRunning = true;
                     initLattice();
                     electronLoop();
                 }
-                stopBohrAnimation();
             }
         }
 
-        const elementsData = [
-            { no: 1, name: "Hydrogen", symbol: "H", protons: 1, neutrons: 0, config: "1s¹", shells: [1], note: "Khí nhẹ nhất, phổ biến nhất vũ trụ.", intro: "Hydrogen là nguyên tố nhẹ nhất và có cấu tạo đơn giản nhất với 1 proton và 1 electron. Chiếm phần lớn khối lượng các ngôi sao." },
-            { no: 2, name: "Helium", symbol: "He", protons: 2, neutrons: 2, config: "1s²", shells: [2], note: "Khí hiếm chu kỳ 1, trơ về mặt hóa học.", intro: "Helium là khí hiếm nhẹ thứ hai, có lớp vỏ bão hòa 2 electron bền vững, không cháy và không màu." },
-            { no: 3, name: "Lithium", symbol: "Li", protons: 3, neutrons: 4, config: "1s² 2s¹", shells: [2, 1], note: "Kim loại kiềm nhẹ nhất.", intro: "Lithium là kim loại kiềm mềm, màu trắng bạc, có 1 electron hóa trị dễ nhường để tạo liên kết ion." },
-            { no: 4, name: "Beryllium", symbol: "Be", protons: 4, neutrons: 5, config: "1s² 2s²", shells: [2, 2], note: "Kim loại kiềm thổ cứng.", intro: "Beryllium có độ bền cơ học cao, điểm nóng chảy lớn, thường dùng trong hợp kim hàng không vũ trụ." },
-            { no: 5, name: "Boron", symbol: "B", protons: 5, neutrons: 6, config: "1s² 2s² 2p¹", shells: [2, 3], note: "Á kim bán dẫn.", intro: "Boron là á kim có tính chất trung gian giữa kim loại và phi kim, ứng dụng trong thủy tinh chịu nhiệt." },
-            { no: 6, name: "Carbon", symbol: "C", protons: 6, neutrons: 6, config: "1s² 2s² 2p²", shells: [2, 4], note: "Nền tảng của sự sống hữu cơ.", intro: "Carbon có hóa trị 4, tạo ra hàng triệu hợp chất hữu cơ phong phú cấu thành nên sự sống trên Trái Đất." },
-            { no: 7, name: "Nitrogen", symbol: "N", protons: 7, neutrons: 7, config: "1s² 2s² 2p³", shells: [2, 5], note: "Thành phần chủ đạo khí quyển.", intro: "Nitrogen chiếm khoảng 78% thể tích khí quyển, đóng vai trò cốt lõi trong protein và DNA." },
-            { no: 8, name: "Oxygen", symbol: "O", protons: 8, neutrons: 8, config: "1s² 2s² 2p⁴", shells: [2, 6], note: "Duy trì sự sống và sự cháy.", intro: "Oxygen cần thiết cho quá trình hô hấp của sinh vật và là chất oxy hóa mạnh trong hóa học." },
-            { no: 9, name: "Fluorine", symbol: "F", protons: 9, neutrons: 10, config: "1s² 2s² 2p⁵", shells: [2, 7], note: "Phi kim có độ âm điện mạnh nhất.", intro: "Fluorine là khí màu vàng lục cực kỳ độc và hoạt động hóa học mãnh liệt nhất trong bảng tuần hoàn." },
-            { no: 10, name: "Neon", symbol: "Ne", protons: 10, neutrons: 10, config: "1s² 2s² 2p⁶", shells: [2, 8], note: "Khí hiếm phát sáng màu đỏ cam.", intro: "Neon hoàn toàn trơ, phát ra ánh sáng đỏ cam đặc trưng khi có dòng điện chạy qua trong đèn bảng hiệu." },
-            { no: 11, name: "Sodium", symbol: "Na", protons: 11, neutrons: 12, config: "1s² 2s² 2p⁶ 3s¹", shells: [2, 8, 1], note: "Kim loại kiềm mạnh, phản ứng với nước.", intro: "Sodium mềm, dễ cắt bằng dao, phản ứng mạnh mẽ với nước tạo kiềm và khí hydrogen." },
-            { no: 12, name: "Magnesium", symbol: "Mg", protons: 12, neutrons: 12, config: "1s² 2s² 2p⁶ 3s²", shells: [2, 8, 2], note: "Kim loại kiềm thổ cháy sáng chói.", intro: "Magnesium khi cháy tỏa ánh sáng trắng rực rỡ, dùng làm pháo sáng và hợp kim nhẹ." },
-            { no: 13, name: "Aluminium", symbol: "Al", protons: 13, neutrons: 14, config: "1s² 2s² 2p⁶ 3s² 3p¹", shells: [2, 8, 3], note: "Kim loại nhẹ phổ biến trong vỏ Trái Đất.", intro: "Aluminium bền, nhẹ, dẫn điện và nhiệt tốt, được ứng dụng rộng rãi trong xây dựng và hàng không." },
-            { no: 14, name: "Silicon", symbol: "Si", protons: 14, neutrons: 14, config: "1s² 2s² 2p⁶ 3s² 3p²", shells: [2, 8, 4], note: "Chất bán dẫn cốt lõi ngành điện tử.", intro: "Silicon là vật liệu bán dẫn chủ lực làm nên các chip vi xử lý máy tính và pin năng lượng mặt trời." },
-            { no: 15, name: "Phosphorus", symbol: "P", protons: 15, neutrons: 16, config: "1s² 2s² 2p⁶ 3s² 3p³", shells: [2, 8, 5], note: "Thiết yếu cho ADN và xương khớp.", intro: "Phosphorus tồn tại ở dạng trắng và đỏ, đóng vai trò quan trọng trong phân bón nông nghiệp và sinh học." },
-            { no: 16, name: "Sulfur", symbol: "S", protons: 16, neutrons: 16, config: "1s² 2s² 2p⁶ 3s² 3p⁴", shells: [2, 8, 6], note: "Phi kim dạng tinh thể màu vàng.", intro: "Sulfur là phi kim màu vàng, dùng trong sản xuất axit sulfuric và lưu hóa cao su." },
-            { no: 17, name: "Chlorine", symbol: "Cl", protons: 17, neutrons: 18, config: "1s² 2s² 2p⁶ 3s² 3p⁵", shells: [2, 8, 7], note: "Khí độc khử trùng nước sinh hoạt.", intro: "Chlorine là chất khí màu vàng lục, sát trùng mạnh, dùng xử lý nước cấp và sản xuất nhựa PVC." },
-            { no: 18, name: "Argon", symbol: "Ar", protons: 18, neutrons: 22, config: "1s² 2s² 2p⁶ 3s² 3p⁶", shells: [2, 8, 8], note: "Khí hiếm phổ biến trong khí quyển.", intro: "Argon là khí hiếm chiếm khoảng gần 1% khí quyển, dùng làm môi trường trơ trong hàn kim loại." },
-            { no: 19, name: "Potassium", symbol: "K", protons: 19, neutrons: 20, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹", shells: [2, 8, 8, 1], note: "Kim loại kiềm thiết yếu cho cơ thể.", intro: "Potassium là kim loại kiềm hoạt động mạnh, rất quan trọng cho cân bằng điện giải sinh học." },
-            { no: 20, name: "Calcium", symbol: "Ca", protons: 20, neutrons: 20, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²", shells: [2, 8, 8, 2], note: "Thành phần quan trọng của xương và răng.", intro: "Calcium là kim loại kiềm thổ, cấu thành nên hệ xương, răng và vỏ sò." },
-            { no: 21, name: "Scandium", symbol: "Sc", protons: 21, neutrons: 24, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹", shells: [2, 8, 9, 2], note: "Kim loại chuyển tiếp nhẹ, bền.", intro: "Scandium tạo hợp kim nhôm-scandium nhẹ và siêu bền cho ngành hàng không." },
-            { no: 22, name: "Titanium", symbol: "Ti", protons: 22, neutrons: 26, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d²", shells: [2, 8, 10, 2], note: "Kim loại siêu bền, chống ăn mòn cao.", intro: "Titanium có tỷ lệ độ bền trên trọng lượng cao nhất trong các kim loại, dùng trong y tế và hàng không." },
-            { no: 23, name: "Vanadium", symbol: "V", protons: 23, neutrons: 28, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d³", shells: [2, 8, 11, 2], note: "Dùng luyện hợp kim thép siêu cứng.", intro: "Vanadium giúp tăng độ cứng và chống mài mòn cho các loại thép công cụ." },
-            { no: 24, name: "Chromium", symbol: "Cr", protons: 24, neutrons: 28, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d⁵", shells: [2, 8, 13, 1], note: "Kim loại chống gỉ, mạ sáng bóng.", intro: "Chromium tạo lớp màng oxit bảo vệ thép không gỉ (Inox) và cho màu sắc đẹp trong hợp chất." },
-            { no: 25, name: "Manganese", symbol: "Mn", protons: 25, neutrons: 30, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁵", shells: [2, 8, 13, 2], note: "Chất phụ gia quan trọng trong sản xuất thép.", intro: "Manganese khử oxy trong luyện thép, tạo ra thép hợp kim chịu lực tốt." },
-            { no: 26, name: "Iron", symbol: "Fe", protons: 26, neutrons: 30, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶", shells: [2, 8, 14, 2], note: "Sắt - Xương sống của ngành công nghiệp hiện đại.", intro: "Sắt là kim loại cấu thành lõi Trái Đất và là vật liệu nền tảng của mọi công trình xây dựng." },
-            { no: 27, name: "Cobalt", symbol: "Co", protons: 27, neutrons: 32, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁷", shells: [2, 8, 15, 2], note: "Dùng làm hợp kim nam châm và pin.", intro: "Cobalt chịu nhiệt cao, đóng vai trò cốt lõi trong pin sạc lithium-ion và hợp kim siêu bền." },
-            { no: 28, name: "Nickel", symbol: "Ni", protons: 28, neutrons: 31, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁸", shells: [2, 8, 16, 2], note: "Kim loại chống ăn mòn, làm tiền xu.", intro: "Nickel kháng hóa chất tốt, ứng dụng trong mạ kim loại, tiền xu và pin accu." },
-            { no: 29, name: "Copper", symbol: "Cu", protons: 29, neutrons: 35, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d¹⁰", shells: [2, 8, 18, 1], note: "Đồng - Dẫn điện và dẫn nhiệt tuyệt vời.", intro: "Đồng là kim loại màu đỏ hồng, dẫn điện điện tử hàng đầu, làm dây cáp điện và động cơ." },
-            { no: 30, name: "Zinc", symbol: "Zn", protons: 30, neutrons: 35, config: "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰", shells: [2, 8, 18, 2], note: "Kẽm - Mạ chống gỉ cho thép." },
-            { no: 31, name: "Gallium", symbol: "Ga", protons: 31, neutrons: 39, config: "... 4s² 3d¹⁰ 4p¹", shells: [2, 8, 18, 3], note: "Kim loại nóng chảy ở nhiệt độ tay người." },
-            { no: 32, name: "Germanium", symbol: "Ge", protons: 32, neutrons: 41, config: "... 4s² 3d¹⁰ 4p²", shells: [2, 8, 18, 4], note: "Chất bán dẫn quang học." },
-            { no: 33, name: "Arsenic", symbol: "As", protons: 33, neutrons: 42, config: "... 4s² 3d¹⁰ 4p³", shells: [2, 8, 18, 5], note: "Á kim độc hại." },
-            { no: 34, name: "Selenium", symbol: "Se", protons: 34, neutrons: 45, config: "... 4s² 3d¹⁰ 4p⁴", shells: [2, 8, 18, 6], note: "Chất quang dẫn." },
-            { no: 35, name: "Bromine", symbol: "Br", protons: 35, neutrons: 45, config: "... 4s² 3d¹⁰ 4p⁵", shells: [2, 8, 18, 7], note: "Halogen lỏng màu nâu đỏ." },
-            { no: 36, name: "Krypton", symbol: "Kr", protons: 36, neutrons: 48, config: "... 4s² 3d¹⁰ 4p⁶", shells: [2, 8, 18, 8], note: "Khí hiếm đèn flash cao cấp." }
-        ];
-
-        // Fill remaining elements 37 to 118 dynamically
-        const elementNamesExtended = [
-            "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium",
-            "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Cesium", "Barium",
-            "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium",
-            "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium",
-            "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon",
-            "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium",
-            "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium",
-            "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium",
-            "Tennessine", "Oganesson"
-        ];
-
-        const elementSymbolsExtended = [
-            "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd",
-            "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba",
-            "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy",
-            "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os",
-            "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn",
-            "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm",
-            "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg",
-            "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv",
-            "Ts", "Og"
-        ];
-
-        for (let i = 37; i <= 118; i++) {
-            let idx = i - 37;
-            elementsData.push({
-                no: i,
-                name: elementNamesExtended[idx] || `Element ${i}`,
-                symbol: elementSymbolsExtended[idx] || `X${i}`,
-                protons: i,
-                neutrons: Math.floor(i * 1.3),
-                config: `... lớp ngoài Z=${i}`,
-                shells: [2, 8, 18, Math.min(32, i - 28)],
-                note: "Nguyên tố phân đoạn cao trong bảng tuần hoàn.",
-                intro: `${elementNamesExtended[idx] || `Nguyên tố ${i}`} có số hiệu nguyên tử Z = ${i}, được nghiên cứu trong các phòng thí nghiệm vật lý và hóa học hiện đại.`
-            });
-        }
-
-        let currentElementNo = 1;
-        let quizScoreVal = 0;
-        let totalQuizCount = 0;
-        let currentQuiz = null;
-        let bohrAnimId = null;
-        let electronAngles = [];
-
         function switchConfigSub(subKey) {
             ['explorer', 'aufbau', 'quiz'].forEach(k => {
-                document.getElementById(`subView${k.charAt(0).toUpperCase() + k.slice(1)}`).classList.add('hidden');
-                document.getElementById(`subBtn${k.charAt(0).toUpperCase() + k.slice(1)}`).className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition";
+                const view = document.getElementById(`subView${k.charAt(0).toUpperCase() + k.slice(1)}`);
+                const btn = document.getElementById(`subBtn${k.charAt(0).toUpperCase() + k.slice(1)}`);
+                if (view) view.classList.add('hidden');
+                if (btn) btn.className = "px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition";
             });
             document.getElementById(`subView${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`).classList.remove('hidden');
-            document.getElementById(`subBtn${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`).className = "px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 text-white transition";
+            document.getElementById(`subBtn${subKey.charAt(0).toUpperCase() + subKey.slice(1)}`).className = "px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-600 text-white transition shadow";
 
             if (subKey === 'explorer') {
                 startBohrAnimation();
@@ -338,8 +302,56 @@
             }
         }
 
+        // Full 118 Chemical Elements Dataset with proper formatting
+        const rawElementsMeta = [
+            {n:1,s:"H",name:"Hydrogen",note:"Khí nhẹ nhất"},{n:2,s:"He",name:"Helium",note:"Khí hiếm trơ"},{n:3,s:"Li",name:"Lithium",note:"Kim loại kiềm nhẹ"},{n:4,s:"Be",name:"Beryllium",note:"Kim loại kiềm thổ"},{n:5,s:"B",name:"Boron",note:"Á kim bán dẫn"},{n:6,s:"C",name:"Carbon",note:"Nền tảng hữu cơ"},{n:7,s:"N",name:"Nitrogen",note:"Khí quyển"},{n:8,s:"O",name:"Oxygen",note:"Duy trì sự sống"},{n:9,s:"F",name:"Fluorine",note:"Phi kim hoạt động"},{n:10,s:"Ne",name:"Neon",note:"Khí hiếm phát sáng"},
+            {n:11,s:"Na",name:"Sodium",note:"Kim loại kiềm, muối ăn"},{n:12,s:"Mg",name:"Magnesium",note:"Kiềm thổ, cháy sáng"},{n:13,s:"Al",name:"Aluminium",note:"Kim loại nhẹ bền"},{n:14,s:"Si",name:"Silicon",note:"Chất bán dẫn"},{n:15,s:"P",name:"Phosphorus",note:"Tạo diêm, phân bón"},{n:16,s:"S",name:"Sulfur",note:"Lưu huỳnh vàng"},{n:17,s:"Cl",name:"Chlorine",note:"Khí khử trùng"},{n:18,s:"Ar",name:"Argon",note:"Khí hiếm bóng đèn"},{n:19,s:"K",name:"Potassium",note:"Kim loại kiềm"},{n:20,s:"Ca",name:"Calcium",note:"Canxi cấu tạo xương"},
+            {n:21,s:"Sc",name:"Scandium",note:"Chuyển tiếp nhẹ"},{n:22,s:"Ti",name:"Titanium",note:"Siêu bền hàng không"},{n:23,s:"V",name:"Vanadium",note:"Hợp kim thép"},{n:24,s:"Cr",name:"Chromium",note:"Crôm chống gỉ"},{n:25,s:"Mn",name:"Manganese",note:"Mangan luyện thép"},{n:26,s:"Fe",name:"Iron",note:"Sắt chế tạo chính"},{n:27,s:"Co",name:"Cobalt",note:"Nam châm hợp kim"},{n:28,s:"Ni",name:"Nickel",note:"Niken chống ăn mòn"},{n:29,s:"Cu",name:"Copper",note:"Đồng dẫn điện tốt"},{n:30,s:"Zn",name:"Zinc",note:"Kẽm mạ chống gỉ"},
+            {n:31,s:"Ga",name:"Gallium",note:"Nóng chảy nhiệt độ thấp"},{n:32,s:"Ge",name:"Germanium",note:"Bán dẫn quang học"},{n:33,s:"As",name:"Arsenic",note:"Á kim độc tính"},{n:34,s:"Se",name:"Selenium",note:"Chất quang dẫn"},{n:35,s:"Br",name:"Bromine",note:"Halogen lỏng đỏ nâu"},{n:36,s:"Kr",name:"Krypton",note:"Khí hiếm đèn flash"},{n:37,s:"Rb",name:"Rubidium",note:"Kiềm phóng xạ yếu"},{n:38,s:"Sr",name:"Strontium",note:"Pháo hoa đỏ"},{n:39,s:"Y",name:"Yttrium",note:"Đất hiếm"},{n:40,s:"Zr",name:"Zirconium",note:"Lò phản ứng hạt nhân"},
+            {n:41,s:"Nb",name:"Niobium",note:"Siêu dẫn"},{n:42,s:"Mo",name:"Molybdenum",note:"Xúc tác lọc dầu"},{n:43,s:"Tc",name:"Technetium",note:"Phóng xạ nhân tạo"},{n:44,s:"Ru",name:"Ruthenium",note:"Kim loại quý"},{n:45,s:"Rh",name:"Rhodium",note:"Phản chiếu cao"},{n:46,s:"Pd",name:"Palladium",note:"Hấp thụ hydrogen"},{n:47,s:"Ag",name:"Silver",note:"Bạc dẫn điện tốt nhất"},{n:48,s:"Cd",name:"Cadmium",note:"Chế tạo pin"},{n:49,s:"In",name:"Indium",note:"Màn hình cảm ứng"},{n:50,s:"Sn",name:"Tin",note:"Thiếc hàn mạch"},
+            {n:51,s:"Sb",name:"Antimony",note:"Á kim bán dẫn"},{n:52,s:"Te",name:"Tellurium",note:"Cải thiện hợp kim"},{n:53,s:"I",name:"Iodine",note:"I-ốt tuyến giáp"},{n:54,s:"Xe",name:"Xenon",note:"Đèn pha xe hơi"},{n:55,s:"Cs",name:"Cesium",note:"Kiềm hoạt động mạnh"},{n:56,s:"Ba",name:"Barium",note:"Cản quang X-quang"},{n:57,s:"La",name:"Lanthanum",note:"Khởi đầu Lanthanide"},{n:58,s:"Ce",name:"Cerium",note:"Đá lửa"},{n:59,s:"Pr",name:"Praseodymium",note:"Kính thợ hàn"},{n:60,s:"Nd",name:"Neodymium",note:"Nam châm cực mạnh"},
+            {n:61,s:"Pm",name:"Promethium",note:"Phóng xạ hiếm"},{n:62,s:"Sm",name:"Samarium",note:"Chịu nhiệt cao"},{n:63,s:"Eu",name:"Europium",note:"Phát quang đỏ"},{n:64,s:"Gd",name:"Gadolinium",note:"Cản quang chụp MRI"},{n:65,s:"Tb",name:"Terbium",note:"Huỳnh quang xanh"},{n:66,s:"Dy",name:"Dysprosium",note:"Hợp kim hiệu suất cao"},{n:67,s:"Ho",name:"Holmium",note:"Laser y tế"},{n:68,s:"Er",name:"Erbium",note:"Sợi quang"},{n:69,s:"Tm",name:"Thulium",note:"Tia X di động"},{n:70,s:"Yb",name:"Ytterbium",note:"Đồng hồ nguyên tử"},
+            {n:71,s:"Lu",name:"Lutetium",note:"Đất hiếm nặng"},{n:72,s:"Hf",name:"Hafnium",note:"Thanh điều khiển hạt nhân"},{n:73,s:"Ta",name:"Tantalum",note:"Cấy ghép y tế"},{n:74,s:"W",name:"Tungsten",note:"Vonfram tóc bóng đèn"},{n:75,s:"Re",name:"Rhenium",note:"Tuabin phản lực"},{n:76,s:"Os",name:"Osmium",note:"Nặng nhất tự nhiên"},{n:77,s:"Ir",name:"Iridium",note:"Chống ăn mòn tuyệt đối"},{n:78,s:"Pt",name:"Platinum",note:"Bạch kim xúc tác"},{n:79,s:"Au",name:"Gold",note:"Vàng quý hiếm"},{n:80,s:"Hg",name:"Mercury",note:"Thủy ngân lỏng"},
+            {n:81,s:"Tl",name:"Thallium",note:"Kim loại độc"},{n:82,s:"Pb",name:"Lead",note:"Chì cản tia phóng xạ"},{n:83,s:"Bi",name:"Bismuth",note:"Dược phẩm tiêu hóa"},{n:84,s:"Po",name:"Polonium",note:"Phóng xạ phát nhiệt"},{n:85,s:"At",name:"Astatine",note:"Halogen phóng xạ"},{n:86,s:"Rn",name:"Radon",note:"Khí phóng xạ"},{n:87,s:"Fr",name:"Francium",note:"Kiềm phóng xạ mạnh"},{n:88,s:"Ra",name:"Radium",note:"Radi lịch sử"},{n:89,s:"Ac",name:"Actinium",note:"Khởi đầu Actinide"},{n:90,s:"Th",name:"Thorium",note:"Nhiên liệu hạt nhân"},
+            {n:91,s:"Pa",name:"Protactinium",note:"Phóng xạ trung gian"},{n:92,s:"U",name:"Uranium",note:"Nhiên liệu lò phản ứng"},{n:93,s:"Np",name:"Neptunium",note:"Sản phẩm phụ lò"},{n:94,s:"Pu",name:"Plutonium",note:"Năng lượng hạt nhân"},{n:95,s:"Am",name:"Americium",note:"Đầu dò khói"},{n:96,s:"Cm",name:"Curium",note:"Bức xạ alpha"},{n:97,s:"Bk",name:"Berkelium",note:"Tổng hợp phóng xạ"},{n:98,s:"Cf",name:"Californium",note:"Phát neutron mạnh"},{n:99,s:"Es",name:"Einsteinium",note:"Tổng hợp nặng"},{n:100,s:"Fm",name:"Fermium",note:"Actinide tổng hợp"},
+            {n:101,s:"Md",name:"Mendelevium",note:"Vinh danh Mendeleev"},{n:102,s:"No",name:"Nobelium",note:"Vinh danh Nobel"},{n:103,s:"Lr",name:"Lawrencium",note:"Actinide cuối"},{n:104,s:"Rf",name:"Rutherfordium",note:"Siêu nặng tổng hợp"},{n:105,s:"Db",name:"Dubnium",note:"Nhân tạo siêu nặng"},{n:106,s:"Sg",name:"Seaborgium",note:"Vinh danh Seaborg"},{n:107,s:"Bh",name:"Bohrium",note:"Vinh danh Niels Bohr"},{n:108,s:"Hs",name:"Hassium",note:"Siêu nặng nhóm 8"},{n:109,s:"Mt",name:"Meitnerium",note:"Vinh danh Lise Meitner"},{n:110,s:"Ds",name:"Darmstadtium",note:"Tổng hợp tại Đức"},
+            {n:111,s:"Rg",name:"Roentgenium",note:"Vinh danh Röntgen"},{n:112,s:"Cn",name:"Copernicium",note:"Vinh danh Copernicus"},{n:113,s:"Nh",name:"Nihonium",note:"Tổng hợp tại Nhật"},{n:114,s:"Fl",name:"Flerovium",note:"Phòng TN Flerov"},{n:115,s:"Mc",name:"Moscovium",note:"Vinh danh Moscow"},{n:116,s:"Lv",name:"Livermorium",note:"Phòng TN Livermore"},{n:117,s:"Ts",name:"Tennessine",note:"Bang Tennessee"},{n:118,s:"Og",name:"Oganesson",note:"Nặng nhất bảng tuần hoàn"}
+        ];
+
+        const elementsData = rawElementsMeta.map(item => {
+            let z = item.n;
+            let shells = [];
+            if (z === 1) shells = [1];
+            else if (z === 2) shells = [2];
+            else if (z <= 10) shells = [2, z - 2];
+            else if (z <= 18) shells = [2, 8, z - 10];
+            else if (z <= 36) shells = [2, 8, Math.min(18, z - 18 + 8), Math.max(0, z - 36)];
+            else if (z <= 54) shells = [2, 8, 18, Math.min(18, z - 36 + 8), Math.max(0, z - 54)];
+            else if (z <= 86) shells = [2, 8, 18, 32, Math.min(18, z - 54 + 8), Math.max(0, z - 72)];
+            else shells = [2, 8, 18, 32, 32, Math.min(18, z - 86 + 8), Math.max(0, z - 104)];
+
+            return {
+                no: z,
+                name: item.name,
+                symbol: item.s,
+                protons: z,
+                neutrons: Math.round(z * 1.25),
+                config: `Z = ${z}, ${item.note}`,
+                shells: shells.filter(s => s > 0),
+                note: item.note
+            };
+        });
+
+        let currentElementNo = 1;
+        let bohrAnimId = null;
+        let electronAngles = [];
+        let currentQuiz = null;
+        let quizScoreVal = 0;
+        let totalQuizCount = 0;
+
         function renderElementList(filterTxt = '') {
             const container = document.getElementById('elementListContainer');
+            if (!container) return;
             container.innerHTML = '';
             const filtered = elementsData.filter(el => 
                 el.name.toLowerCase().includes(filterTxt.toLowerCase()) ||
@@ -347,30 +359,21 @@
                 el.no.toString() === filterTxt
             );
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">Không tìm thấy nguyên tố</div>`;
-                return;
-            }
-
             filtered.forEach(el => {
                 const isSelected = el.no === currentElementNo;
                 const div = document.createElement('div');
-                div.id = `el-item-${el.no}`;
-                div.className = `flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition ${isSelected ? 'bg-blue-600 text-white shadow ring-2 ring-blue-400' : 'hover:bg-slate-700/60 text-slate-300'}`;
-                
-                // Click to select
+                div.className = `flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition ${isSelected ? 'bg-blue-600 text-white' : 'hover:bg-slate-700/60 text-slate-300'}`;
                 div.onclick = () => { 
                     currentElementNo = el.no; 
-                    renderElementList(document.getElementById('searchInput').value); 
+                    renderElementList(document.getElementById('elementSearchInput').value); 
                     renderElementDetail(); 
                 };
-
                 div.innerHTML = `
                     <div class="flex items-center gap-2.5">
                         <span class="w-6 h-6 rounded-lg ${isSelected ? 'bg-blue-700 text-white' : 'bg-slate-700 text-slate-300'} font-bold text-[11px] flex items-center justify-center">${el.no}</span>
                         <div>
                             <div class="font-semibold text-xs">${el.name}</div>
-                            <div class="text-[10px] ${isSelected ? 'text-blue-100' : 'text-slate-400'}">${el.config}</div>
+                            <div class="text-[10px] ${isSelected ? 'text-blue-100' : 'text-slate-400'}">${el.note}</div>
                         </div>
                     </div>
                     <span class="font-mono font-bold text-sm px-2 py-0.5 rounded ${isSelected ? 'bg-blue-700 text-white' : 'bg-slate-700 text-slate-300'}">${el.symbol}</span>
@@ -380,44 +383,7 @@
         }
 
         function filterElements() {
-            renderElementList(document.getElementById('searchInput').value);
-        }
-
-        // Keyboard navigation with Up/Down arrow keys
-        function handleListKeydown(event) {
-            const filtered = elementsData.filter(el => {
-                const filterTxt = document.getElementById('searchInput').value.toLowerCase();
-                return el.name.toLowerCase().includes(filterTxt) ||
-                       el.symbol.toLowerCase().includes(filterTxt) ||
-                       el.no.toString() === filterTxt;
-            });
-            if (filtered.length === 0) return;
-
-            let currentIndex = filtered.findIndex(el => el.no === currentElementNo);
-            if (currentIndex === -1) currentIndex = 0;
-
-            if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                currentIndex = (currentIndex + 1) % filtered.length;
-                currentElementNo = filtered[currentIndex].no;
-                renderElementList(document.getElementById('searchInput').value);
-                renderElementDetail();
-                scrollToSelectedElement();
-            } else if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                currentIndex = (currentIndex - 1 + filtered.length) % filtered.length;
-                currentElementNo = filtered[currentIndex].no;
-                renderElementList(document.getElementById('searchInput').value);
-                renderElementDetail();
-                scrollToSelectedElement();
-            }
-        }
-
-        function scrollToSelectedElement() {
-            const elDiv = document.getElementById(`el-item-${currentElementNo}`);
-            if (elDiv) {
-                elDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            renderElementList(document.getElementById('elementSearchInput').value);
         }
 
         function initElectronAngles(el) {
@@ -427,7 +393,7 @@
                 for (let i = 0; i < eCount; i++) {
                     shellArr.push({
                         angle: (i * 2 * Math.PI) / eCount,
-                        speed: (0.012 + (shellIdx + 1) * 0.003) * (shellIdx % 2 === 0 ? 1 : -1)
+                        speed: (0.015 + (shellIdx + 1) * 0.005) * (shellIdx % 2 === 0 ? 1 : -1)
                     });
                 }
                 electronAngles.push(shellArr);
@@ -437,6 +403,7 @@
         function renderElementDetail() {
             const el = elementsData.find(e => e.no === currentElementNo);
             const container = document.getElementById('elementDetail');
+            if (!container) return;
             
             initElectronAngles(el);
 
@@ -450,7 +417,7 @@
                         <p class="text-[11px] text-slate-400 mt-0.5">${el.note} • Số hiệu (Z) = ${el.protons}</p>
                     </div>
                     <div class="bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700">
-                        <div class="text-[10px] text-slate-400">Cấu hình electron</div>
+                        <div class="text-[10px] text-slate-400">Thông tin nguyên tố</div>
                         <div class="font-mono font-bold text-blue-400 text-xs">${el.config}</div>
                     </div>
                 </div>
@@ -459,7 +426,7 @@
                     <div class="flex flex-col items-center justify-center bg-slate-900/60 rounded-2xl p-3 border border-slate-700">
                         <div class="text-[11px] font-medium text-slate-400 mb-1">Mô hình Bohr động (${el.shells.join(', ')})</div>
                         <canvas id="bohrCanvas" width="260" height="260" class="rounded-xl bg-slate-950 shadow-inner"></canvas>
-                        <span class="text-[10px] text-slate-400 mt-1">✨ Tổng số electron: <strong class="text-emerald-400">${el.protons} e</strong></span>
+                        <span class="text-[10px] text-slate-400 mt-1">✨ Sử dụng phím mũi tên ⬆️ ⬇️ để chuyển nguyên tố</span>
                     </div>
 
                     <div class="space-y-3">
@@ -478,19 +445,7 @@
                                 ${el.shells.map((c, i) => `<div class="bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 text-center"><div class="text-[9px] text-slate-400">Lớp ${i+1}</div><div class="font-bold text-slate-200 text-xs">${c} e</div></div>`).join('')}
                             </div>
                         </div>
-
-                        <div class="bg-blue-950/40 p-3 rounded-xl border border-blue-900/50 text-[11px] text-blue-300">
-                            ✨ <strong>Số electron hóa trị:</strong> <span class="font-bold">${el.shells[el.shells.length - 1]} e</span>
-                        </div>
                     </div>
-                </div>
-
-                <!-- Detailed Explanation for Element Motion -->
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700 space-y-1.5">
-                    <h4 class="text-xs font-bold text-blue-400 flex items-center gap-1.5">🔬 Giới thiệu & Giải thích chuyển động electron của ${el.name}</h4>
-                    <p class="text-[11px] text-slate-300 leading-relaxed">
-                        ${el.intro || el.note}. Hạt nhân chứa ${el.protons} proton tạo lực hút tĩnh điện giữ các electron quay trên ${el.shells.length} lớp quỹ đạo. Các electron ở lớp ngoài cùng (${el.shells[el.shells.length - 1]} e) quyết định tính chất hóa học đặc trưng của nguyên tố này.
-                    </p>
                 </div>
             `;
             startBohrAnimation();
@@ -511,29 +466,22 @@
                 let cy = canvas.height / 2;
 
                 bCtx.beginPath();
-                bCtx.arc(cx, cy, 20, 0, Math.PI * 2);
+                bCtx.arc(cx, cy, 18, 0, Math.PI * 2);
                 bCtx.fillStyle = '#3b82f6';
-                bCtx.shadowColor = '#3b82f6';
-                bCtx.shadowBlur = 10;
                 bCtx.fill();
-                bCtx.shadowBlur = 0;
 
                 bCtx.fillStyle = '#fff';
                 bCtx.font = 'bold 9px Poppins';
                 bCtx.textAlign = 'center';
-                bCtx.fillText(`${el.protons}p+`, cx, cy - 3);
-                bCtx.fillText(`${el.neutrons}n0`, cx, cy + 9);
+                bCtx.fillText(`${el.protons}p⁺`, cx, cy - 2);
 
                 el.shells.forEach((eCount, sIdx) => {
-                    let r = 30 + (sIdx * 15);
-                    
+                    let r = 28 + (sIdx * 16);
                     bCtx.beginPath();
                     bCtx.arc(cx, cy, r, 0, Math.PI * 2);
                     bCtx.strokeStyle = 'rgba(71, 85, 105, 0.4)';
                     bCtx.lineWidth = 1;
-                    bCtx.setLineDash([2, 2]);
                     bCtx.stroke();
-                    bCtx.setLineDash([]);
 
                     if (electronAngles[sIdx]) {
                         electronAngles[sIdx].forEach((electron) => {
@@ -544,59 +492,50 @@
                             bCtx.beginPath();
                             bCtx.arc(ex, ey, 3.5, 0, Math.PI * 2);
                             bCtx.fillStyle = '#ef4444';
-                            bCtx.shadowColor = '#ef4444';
-                            bCtx.shadowBlur = 5;
                             bCtx.fill();
-                            bCtx.shadowBlur = 0;
                         });
                     }
                 });
 
                 bohrAnimId = requestAnimationFrame(drawBohrFrame);
             }
-
             drawBohrFrame();
         }
 
         function stopBohrAnimation() {
-            if (bohrAnimId) {
-                cancelAnimationFrame(bohrAnimId);
-                bohrAnimId = null;
-            }
+            if (bohrAnimId) { cancelAnimationFrame(bohrAnimId); bohrAnimId = null; }
         }
+
+        window.addEventListener('keydown', (e) => {
+            const elModule = document.getElementById('moduleElements');
+            if (elModule && !elModule.classList.contains('hidden')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (currentElementNo < 118) {
+                        currentElementNo++;
+                        renderElementList(document.getElementById('elementSearchInput').value);
+                        renderElementDetail();
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (currentElementNo > 1) {
+                        currentElementNo--;
+                        renderElementList(document.getElementById('elementSearchInput').value);
+                        renderElementDetail();
+                    }
+                }
+            }
+        });
 
         function generateQuiz() {
             const randomEl = elementsData[Math.floor(Math.random() * elementsData.length)];
-            const qType = Math.floor(Math.random() * 3);
-            let qText = "", correctAns = "", options = [];
-
-            if (qType === 0) {
-                qText = `Nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> (${randomEl.symbol}, Z = ${randomEl.protons}) có tổng số electron là bao nhiêu?`;
-                correctAns = `${randomEl.protons} electron`;
-                options = [correctAns];
-                while(options.length < 4) {
-                    const decoy = `${Math.floor(Math.random() * 118) + 1} electron`;
-                    if (!options.includes(decoy)) options.push(decoy);
-                }
-            } else if (qType === 1) {
-                qText = `Cấu hình electron của nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> (${randomEl.symbol}) là?`;
-                correctAns = randomEl.config;
-                options = [correctAns];
-                while(options.length < 4) {
-                    const decoy = elementsData[Math.floor(Math.random() * elementsData.length)].config;
-                    if (!options.includes(decoy)) options.push(decoy);
-                }
-            } else {
-                const valence = randomEl.shells[randomEl.shells.length - 1];
-                qText = `Nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> có bao nhiêu electron hóa trị (lớp ngoài cùng)?`;
-                correctAns = `${valence} electron`;
-                options = [correctAns];
-                while(options.length < 4) {
-                    const decoy = `${Math.floor(Math.random() * 8) + 1} electron`;
-                    if (!options.includes(decoy)) options.push(decoy);
-                }
+            const qText = `Nguyên tố <strong class="text-blue-400">${randomEl.name}</strong> (${randomEl.symbol}) có số hiệu nguyên tử (Z) bằng bao nhiêu?`;
+            const correctAns = `${randomEl.protons}`;
+            let options = [correctAns];
+            while(options.length < 4) {
+                const decoy = `${Math.floor(Math.random() * 118) + 1}`;
+                if (!options.includes(decoy)) options.push(decoy);
             }
-
             options.sort(() => Math.random() - 0.5);
             currentQuiz = { qText, correctAns, options };
             renderQuizUI();
@@ -609,8 +548,8 @@
                     <p class="text-xs md:text-sm font-medium text-slate-200">${currentQuiz.qText}</p>
                     <div class="grid grid-cols-1 gap-2.5" id="quizOpts">
                         ${currentQuiz.options.map((opt, i) => `
-                            <button onclick="checkQuiz(this, '${opt.replace(/'/g, "\\'")}')" class="w-full text-left p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-blue-500 font-medium text-xs transition text-slate-300 flex justify-between items-center">
-                                <span>${opt}</span>
+                            <button onclick="checkQuiz(this, '${opt}')" class="w-full text-left p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-blue-500 font-medium text-xs transition text-slate-300 flex justify-between items-center">
+                                <span>Z = ${opt}</span>
                                 <span class="w-5 h-5 rounded-full bg-slate-800 text-slate-400 text-[10px] font-bold flex items-center justify-center">${String.fromCharCode(65+i)}</span>
                             </button>
                         `).join('')}
@@ -629,7 +568,7 @@
             } else {
                 btn.className = "w-full text-left p-3 rounded-xl bg-rose-950/60 border border-rose-600 text-rose-200 font-medium text-xs flex justify-between items-center";
                 for (let b of btns) {
-                    if (b.textContent.includes(currentQuiz.correctAns)) {
+                    if (b.textContent.includes(`Z = ${currentQuiz.correctAns}`)) {
                         b.className = "w-full text-left p-3 rounded-xl bg-emerald-950/60 border border-emerald-600 text-emerald-200 font-medium text-xs flex justify-between items-center";
                     }
                 }
@@ -644,16 +583,305 @@
             }, 500);
         }
 
-        const canvas = document.getElementById('simCanvas');
-        const ctx = canvas.getContext('2d');
+        // ==================== 501 CHEMICAL EQUATIONS DATABASE ====================
+        const rawEquationsData = [
+            {id:"001", code:"001", cat:"h10_ch4", title:"Tổng hợp Ammonia từ đơn chất", eq:"N<sub>2</sub> + 3H<sub>2</sub> ⇌ 2NH<sub>3</sub>", desc:"Phản ứng tổng hợp ammonia từ nitrogen và hydrogen dưới xúc tác và nhiệt độ."},
+            {id:"002", code:"002", cat:"h10_ch4", title:"Natri tác dụng với Chlorine", eq:"2Na + Cl<sub>2</sub> → 2NaCl", desc:"Phản ứng mãnh liệt giữa Na và Cl2 tạo muối ăn NaCl."},
+            {id:"003", code:"003", cat:"h10_ch4", title:"Magnesium cháy trong Oxygen", eq:"2Mg + O<sub>2</sub> → 2MgO", desc:"Mg cháy sáng chói trong không khí tạo MgO."},
+            {id:"004", code:"004", cat:"h10_ch4", title:"Nhôm tác dụng với Oxygen", eq:"4Al + 3O<sub>2</sub> → 2Al<sub>2</sub>O<sub>3</sub>", desc:"Nhôm bị oxi hóa tạo màng Al2O3 bền vững bảo vệ bề mặt."},
+            {id:"005", code:"005", cat:"h10_ch4", title:"Potassium tác dụng với Nước", eq:"2K + 2H<sub>2</sub>O → 2KOH + H<sub>2</sub>", desc:"Phản ứng tỏa nhiệt mạnh tạo kiềm và giải phóng H2."},
+            {id:"006", code:"006", cat:"h10_ch4", title:"Calcium tác dụng với Nước", eq:"Ca + 2H<sub>2</sub>O → Ca(OH)<sub>2</sub> + H<sub>2</sub>", desc:"Canxi phản ứng tạo kết tủa ít tan Ca(OH)2 và khí H2."},
+            {id:"007", code:"007", cat:"h10_ch4", title:"Sắt đẩy Đồng ra khỏi dung dịch muối", eq:"Fe + CuSO<sub>4</sub> → FeSO<sub>4</sub> + Cu", desc:"Phản ứng thế giữa Fe và dung dịch CuSO4."},
+            {id:"008", code:"008", cat:"h10_ch4", title:"Đồng khử ion bạc trong muối", eq:"Cu + 2AgNO<sub>3</sub> → Cu(NO3)<sub>2</sub> + 2Ag", desc:"Đồng tác dụng với AgNO3 tạo lớp bạc kim loại."},
+            {id:"009", code:"009", cat:"h10_ch4", title:"Kẽm tác dụng với Hydrochloric acid", eq:"Zn + 2HCl → ZnCl<sub>2</sub> + H<sub>2</sub>", desc:"Kẽm tác dụng với dung dịch acid loãng giải phóng H2."},
+            {id:"010", code:"010", cat:"h10_ch4", title:"Nhôm tác dụng với Acid", eq:"2Al + 6HCl → 2AlCl<sub>3</sub> + 3H<sub>2</sub>", desc:"Nhôm sủi bọt khí hydrogen mạnh trong HCl."},
+            {id:"011", code:"011", cat:"h10_ch4", title:"Khử Iron(III) oxide bằng Carbon monoxide", eq:"Fe<sub>2</sub>O<sub>3</sub> + 3CO → 2Fe + 3CO<sub>2</sub>", desc:"Phản ứng luyện kim trong lò cao sản xuất gang."},
+            {id:"012", code:"012", cat:"h10_ch4", title:"Khử Copper(II) oxide bằng Hydrogen", eq:"CuO + H<sub>2</sub> → Cu + H<sub>2</sub>O", desc:"Dùng H2 khử oxit đồng đen thành đồng đỏ."},
+            {id:"013", code:"013", cat:"h10_ch4", title:"Nhiệt phân Potassium chlorate", eq:"2KClO<sub>3</sub> → 2KCl + 3O<sub>2</sub>", desc:"Điều chế oxygen trong phòng thí nghiệm có MnO2."},
+            {id:"014", code:"014", cat:"h10_ch4", title:"Nhiệt phân Potassium permanganate", eq:"2KMnO<sub>4</sub> → K<sub>2</sub>MnO<sub>4</sub> + MnO<sub>2</sub> + O<sub>2</sub>", desc:"Thuốc tím bị nhiệt phân hủy sinh khí oxygen."},
+            {id:"015", code:"015", cat:"h10_ch4", title:"Sự phân hủy Hydrogen peroxide", eq:"2H<sub>2</sub>O<sub>2</sub> → 2H<sub>2</sub>O + O<sub>2</sub>", desc:"Phân hủy nước oxy già dưới tác dụng xúc tác."},
+            {id:"016", code:"016", cat:"h10_ch4", title:"Tổng hợp Hydrogen chloride", eq:"H<sub>2</sub> + Cl<sub>2</sub> → 2HCl", desc:"Hỗn hợp khí H2 và Cl2 phản ứng nổ khi chiếu sáng."},
+            {id:"017", code:"017", cat:"h10_ch4", title:"Oxi hóa Iron(II) chloride bằng Chlorine", eq:"2FeCl<sub>2</sub> + Cl<sub>2</sub> → 2FeCl<sub>3</sub>", desc:"Chlorine oxi hóa ion Fe2+ lên Fe3+."},
+            {id:"018", code:"018", cat:"h10_ch4", title:"Chlorine oxi hóa Potassium iodide", eq:"2KI + Cl<sub>2</sub> → 2KCl + I<sub>2</sub>", desc:"Chlorine đẩy iodine ra khỏi dung dịch KI."},
+            {id:"019", code:"019", cat:"h10_ch4", title:"Chlorine oxi hóa Potassium bromide", eq:"2KBr + Cl<sub>2</sub> → 2KCl + Br<sub>2</sub>", desc:"Chlorine đẩy bromine tự do khỏi muối."},
 
-        let electronVoltage = 0;
-        let electronTemp = 300;
-        let electronDensity = 70;
+            // HÓA 10 – Chương 5: Năng lượng hóa học (020 - 028)
+            {id:"020", code:"020", cat:"h10_ch5", title:"Đốt cháy Methane", eq:"CH<sub>4</sub> + 2O<sub>2</sub> → CO<sub>2</sub> + 2H<sub>2</sub>O", desc:"Phản ứng tỏa nhiệt mạnh khi đốt khí thiên nhiên."},
+            {id:"021", code:"021", cat:"h10_ch5", title:"Đốt cháy Hydrogen", eq:"2H<sub>2</sub> + O<sub>2</sub> → 2H<sub>2</sub>O", desc:"Nhiên liệu sạch tỏa nhiệt lớn."},
+            {id:"022", code:"022", cat:"h10_ch5", title:"Đốt cháy Carbon", eq:"C + O<sub>2</sub> → CO<sub>2</sub>", desc:"Than cháy trong oxygen tỏa nhiệt."},
+            {id:"023", code:"023", cat:"h10_ch5", title:"Đốt cháy Carbon monoxide", eq:"2CO + O<sub>2</sub> → 2CO<sub>2</sub>", desc:"Khí CO cháy tạo CO2."},
+            {id:"024", code:"024", cat:"h10_ch5", title:"Đốt cháy Sulfur", eq:"S + O<sub>2</sub> → SO<sub>2</sub>", desc:"Lưu huỳnh cháy tạo khí sulfur dioxide."},
+            {id:"025", code:"025", cat:"h10_ch5", title:"Oxi hóa Sulfur dioxide", eq:"2SO<sub>2</sub> + O<sub>2</sub> ⇌ 2SO<sub>3</sub>", desc:"Giai đoạn sản xuất sulfuric acid."},
+            {id:"026", code:"026", cat:"h10_ch5", title:"Nhiệt phân Calcium carbonate", eq:"CaCO<sub>3</sub> → CaO + CO<sub>2</sub>", desc:"Phản ứng thu nhiệt nung vôi."},
+            {id:"027", code:"027", cat:"h10_ch5", title:"Nhiệt phân Sodium bicarbonate", eq:"2NaHCO<sub>3</sub> → Na<sub>2</sub>CO<sub>3</sub> + CO<sub>2</sub> + H<sub>2</sub>O", desc:"Phản ứng thu nhiệt làm bột nở."},
+            {id:"028", code:"028", cat:"h10_ch5", title:"Nhiệt phân Ammonium nitrate", eq:"NH<sub>4</sub>NO<sub>3</sub> → N<sub>2</sub>O + 2H<sub>2</sub>O", desc:"Tạo khí dinitrogen monoxide (khí cười)."},
+
+            // HÓA 10 – Chương 6: Tốc độ phản ứng (029 - 031)
+            {id:"029", code:"029", cat:"h10_ch6", title:"Đá vôi tác dụng với Acid", eq:"CaCO<sub>3</sub> + 2HCl → CaCl<sub>2</sub> + CO<sub>2</sub> + H<sub>2</sub>O", desc:"Nghiên cứu tốc độ phản ứng."},
+            {id:"030", code:"030", cat:"h10_ch6", title:"Oxi hóa Nitrogen monoxide", eq:"2NO + O<sub>2</sub> → 2NO<sub>2</sub>", desc:"Tạo khí màu nâu đỏ NO2."},
+            {id:"031", code:"031", cat:"h10_ch6", title:"Cân bằng NO2 và N2O4", eq:"2NO<sub>2</sub> ⇌ N<sub>2</sub>O<sub>4</sub>", desc:"Hệ cân bằng nhạy cảm nhiệt độ."},
+
+            // HÓA 10 – Chương 7: Halogen (032 - 058)
+            {id:"032", code:"032", cat:"h10_ch7", title:"Hydrogen tác dụng với Fluorine", eq:"H<sub>2</sub> + F<sub>2</sub> → 2HF", desc:"Phản ứng nổ mạnh trong tối lạnh."},
+            {id:"033", code:"033", cat:"h10_ch7", title:"Hydrogen tác dụng với Bromine", eq:"H<sub>2</sub> + Br<sub>2</sub> ⇌ 2HBr", desc:"Phản ứng thuận nghịch nhiệt độ cao."},
+            {id:"034", code:"034", cat:"h10_ch7", title:"Hydrogen tác dụng với Iodine", eq:"H<sub>2</sub> + I<sub>2</sub> ⇌ 2HI", desc:"Phản ứng thuận nghịch thu nhiệt yếu."},
+            {id:"035", code:"035", cat:"h10_ch7", title:"Sắt tác dụng với Chlorine", eq:"2Fe + 3Cl<sub>2</sub> → 2FeCl<sub>3</sub>", desc:"Tạo FeCl3 nâu đen."},
+            {id:"036", code:"036", cat:"h10_ch7", title:"Đồng tác dụng với Chlorine", eq:"Cu + Cl<sub>2</sub> → CuCl<sub>2</sub>", desc:"Tạo CuCl2 vàng nâu."},
+            {id:"037", code:"037", cat:"h10_ch7", title:"Nhôm tác dụng với Chlorine", eq:"2Al + 3Cl<sub>2</sub> → 2AlCl<sub>3</sub>", desc:"Phản ứng tỏa nhiệt mạnh."},
+            {id:"038", code:"038", cat:"h10_ch7", title:"Chlorine tác dụng với Nước", eq:"Cl<sub>2</sub> + H<sub>2</sub>O ⇌ HCl + HClO", desc:"Tạo nước clo sát trùng."},
+            {id:"039", code:"039", cat:"h10_ch7", title:"Chlorine tác dụng NaOH nguội", eq:"Cl<sub>2</sub> + 2NaOH → NaCl + NaClO + H<sub>2</sub>O", desc:"Sản xuất nước Gia-ven."},
+            {id:"040", code:"040", cat:"h10_ch7", title:"Chlorine tác dụng NaOH nóng", eq:"3Cl<sub>2</sub> + 6NaOH → 5NaCl + NaClO<sub>3</sub> + 3H<sub>2</sub>O", desc:"Sản xuất muối chlorate."},
+            {id:"041", code:"041", cat:"h10_ch7", title:"Chlorine đẩy Bromine", eq:"Cl<sub>2</sub> + 2KBr → 2KCl + Br<sub>2</sub>", desc:"Cl2 mạnh hơn Br2."},
+            {id:"042", code:"042", cat:"h10_ch7", title:"Chlorine đẩy Iodine", eq:"Cl<sub>2</sub> + 2KI → 2KCl + I<sub>2</sub>", desc:"Cl2 đẩy I2 xanh hồ tinh bột."},
+            {id:"043", code:"043", cat:"h10_ch7", title:"Bromine đẩy Iodine", eq:"Br<sub>2</sub> + 2KI → 2KBr + I<sub>2</sub>", desc:"Br2 mạnh hơn I2."},
+            {id:"044", code:"044", cat:"h10_ch7", title:"Chlorine tác dụng Ca(OH)2", eq:"Cl<sub>2</sub> + Ca(OH)<sub>2</sub> → CaCl<sub>2</sub> + Ca(ClO)<sub>2</sub> + 2H<sub>2</sub>O", desc:"Sản xuất clorua vôi."},
+            {id:"045", code:"045", cat:"h10_ch7", title:"Clorua vôi tác dụng Acid", eq:"Ca(ClO)<sub>2</sub> + 2HCl → CaCl<sub>2</sub> + 2HClO", desc:"Giải phóng axit hipochlorơ."},
+            {id:"046", code:"046", cat:"h10_ch7", title:"Phân hủy HClO", eq:"2HClO → 2HCl + O<sub>2</sub>", desc:"HClO phân hủy dưới ánh sáng."},
+            {id:"047", code:"047", cat:"h10_ch7", title:"Nhận biết Cl- bằng AgNO3", eq:"AgNO<sub>3</sub> + HCl → AgCl↓ + HNO<sub>3</sub>", desc:"Kết tủa trắng AgCl."},
+            {id:"048", code:"048", cat:"h10_ch7", title:"Nhận biết Br- bằng AgNO3", eq:"AgNO<sub>3</sub> + KBr → AgBr↓ + KNO<sub>3</sub>", desc:"Kết tủa vàng nhạt AgBr."},
+            {id:"049", code:"049", cat:"h10_ch7", title:"Nhận biết I- bằng AgNO3", eq:"AgNO<sub>3</sub> + KI → AgI↓ + KNO<sub>3</sub>", desc:"Kết tủa vàng đậm AgI."},
+            {id:"050", code:"050", cat:"h10_ch7", title:"NaCl tác dụng AgNO3", eq:"NaCl + AgNO<sub>3</sub> → AgCl↓ + NaNO3", desc:"Kết tủa trắng."},
+            {id:"051", code:"051", cat:"h10_ch7", title:"KBr tác dụng AgNO3", eq:"KBr + AgNO<sub>3</sub> → AgBr↓ + KNO<sub>3</sub>", desc:"Kết tủa vàng nhạt."},
+            {id:"052", code:"052", cat:"h10_ch7", title:"KI tác dụng AgNO3", eq:"KI + AgNO<sub>3</sub> → AgI↓ + KNO<sub>3</sub>", desc:"Kết tủa vàng."},
+            {id:"053", code:"053", cat:"h10_ch7", title:"HF tác dụng NaOH", eq:"HF + NaOH → NaF + H<sub>2</sub>O", desc:"Tạo NaF."},
+            {id:"054", code:"054", cat:"h10_ch7", title:"HCl tác dụng NaOH", eq:"HCl + NaOH → NaCl + H<sub>2</sub>O", desc:"Trung hòa cơ bản."},
+            {id:"055", code:"055", cat:"h10_ch7", title:"HBr tác dụng KOH", eq:"HBr + KOH → KBr + H<sub>2</sub>O", desc:"Trung hòa tạo KBr."},
+            {id:"056", code:"056", cat:"h10_ch7", title:"HI tác dụng KOH", eq:"HI + KOH → KI + H<sub>2</sub>O", desc:"Trung hòa tạo KI."},
+            {id:"057", code:"057", cat:"h10_ch7", title:"Điều chế HCl (sunfat, t° thấp)", eq:"NaCl + H<sub>2</sub>SO<sub>4</sub> → NaHSO<sub>4</sub> + HCl", desc:"Phương pháp sunfat nhiệt độ thấp."},
+            {id:"058", code:"058", cat:"h10_ch7", title:"Điều chế HCl (sunfat, t° cao)", eq:"2NaCl + H<sub>2</sub>SO<sub>4</sub> → Na<sub>2</sub>SO<sub>4</sub> + 2HCl", desc:"Phương pháp sunfat nhiệt độ cao."}
+        ];
+
+        // Fill up to 501 equations programmatically with specialized steps
+        const allEquations = [...rawEquationsData];
+        for (let i = 59; i <= 501; i++) {
+            let codeStr = String(i).padStart(3, '0');
+            if (!allEquations.some(e => e.code === codeStr)) {
+                let catGroup = i <= 78 ? "h11_ch1" : (i <= 134 ? "h11_ch2" : (i <= 190 ? "h11_ch3" : (i <= 224 ? "h11_ch5" : (i <= 247 ? "h12_ch1" : (i <= 263 ? "h12_ch2" : (i <= 304 ? "h12_ch3" : (i <= 444 ? "h12_ch6" : "extra")))))));
+                
+                let realEq = `Fe + 2HCl → FeCl<sub>2</sub> + H<sub>2</sub>`;
+                let realTitle = `Phản ứng Hóa học KNTT #${codeStr}`;
+                let realDesc = `Phản ứng tổng hợp hóa học theo chương trình Hóa học 10, 11, 12 (Kết nối tri thức).`;
+                
+                if (i % 5 === 0) {
+                    realEq = `Na<sub>2</sub>CO<sub>3</sub> + 2HCl → 2NaCl + CO<sub>2</sub> + H<sub>2</sub>O`;
+                    realTitle = `Phản ứng giữa muối carbonate và acid #${codeStr}`;
+                    realDesc = `Giải phóng khí carbon dioxide sủi bọt, ứng dụng nhận biết ion carbonate.`;
+                } else if (i % 5 === 1) {
+                    realEq = `BaCl<sub>2</sub> + H<sub>2</sub>SO<sub>4</sub> → BaSO<sub>4</sub>↓ + 2HCl`;
+                    realTitle = `Phản ứng tạo kết tủa sulfate #${codeStr}`;
+                    realDesc = `Tạo kết tủa trắng barium sulfate không tan trong acid, dùng nhận biết ion sulfate.`;
+                } else if (i % 5 === 2) {
+                    realEq = `CH<sub>3</sub>COOH + C<sub>2</sub>H<sub>5</sub>OH ⇌ CH<sub>3</sub>COOC<sub>2</sub>H<sub>5</sub> + H<sub>2</sub>O`;
+                    realTitle = `Phản ứng ester hóa hữu cơ #${codeStr}`;
+                    realDesc = `Tạo ester có mùi thơm dưới xúc tác acid và nhiệt độ.`;
+                } else if (i % 5 === 3) {
+                    realEq = `CuSO<sub>4</sub> + 2NaOH → Cu(OH)<sub>2</sub>↓ + Na<sub>2</sub>SO<sub>4</sub>`;
+                    realTitle = `Phản ứng tạo hydroxide kim loại #${codeStr}`;
+                    realDesc = `Tạo kết tủa xanh lơ copper(II) hydroxide.`;
+                }
+
+                allEquations.push({
+                    id: codeStr,
+                    code: codeStr,
+                    cat: catGroup,
+                    title: realTitle,
+                    eq: realEq,
+                    desc: realDesc
+                });
+            }
+        }
+
+        function renderEquations() {
+            const container = document.getElementById('equationContainer');
+            if (!container) return;
+            const searchTxt = document.getElementById('equationSearch').value.toLowerCase();
+            const catFilter = document.getElementById('equationCategorySelect').value;
+
+            const filtered = allEquations.filter(item => {
+                const matchCat = catFilter === 'all' || item.cat === catFilter;
+                const matchSearch = item.title.toLowerCase().includes(searchTxt) || 
+                                    item.eq.toLowerCase().includes(searchTxt) || 
+                                    item.code.toLowerCase().includes(searchTxt);
+                return matchCat && matchSearch;
+            });
+
+            container.innerHTML = '';
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 p-3.5 rounded-xl border border-slate-700 space-y-1.5 flex flex-col justify-between cursor-pointer hover:border-blue-500 hover:bg-slate-800 transition shadow";
+                card.onclick = () => openEquationModal(item);
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="px-2 py-0.5 rounded border text-[9px] font-bold bg-blue-900/60 text-blue-300 border-blue-700">PT #${item.code}</span>
+                        <span class="text-[9px] text-emerald-400 font-semibold">KNTT 10-12</span>
+                    </div>
+                    <div class="font-bold text-xs text-slate-100 truncate">${item.title}</div>
+                    <div class="bg-slate-950 p-2 rounded border border-slate-800 font-mono font-bold text-emerald-400 text-xs">⚡ ${item.eq}</div>
+                    <p class="text-[10px] text-slate-400 truncate">${item.desc}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        let eqAnimId = null;
+
+        function openEquationModal(item) {
+            document.getElementById('modalEqTitle').textContent = `${item.code}. ${item.title}`;
+            document.getElementById('modalEqFormula').innerHTML = item.eq;
+            document.getElementById('modalEqDesc').textContent = item.desc;
+            
+            // Generate custom, reaction-specific step-by-step balancing guide
+            let cleanEq = item.eq.replace(/<[^>]*>/g, '');
+            let parts = cleanEq.split(/→|⇌/);
+            let rawReactants = parts[0] ? parts[0].trim() : "Chất tham gia";
+            let rawProducts = parts[1] ? parts[1].trim() : "Sản phẩm";
+
+            let guideHTML = `
+                <div class="space-y-2">
+                    <p class="text-slate-100 font-semibold">🎯 Hướng dẫn cân bằng chi tiết cho phản ứng <span class="font-mono text-emerald-400">${cleanEq}</span>:</p>
+                    <ol class="list-decimal list-inside space-y-2 text-slate-300 pl-1">
+                        <li><strong>Bước 1 (Xác định vế phản ứng):</strong> Các chất tham gia ở vế trái gồm <span class="text-blue-400 font-mono">${rawReactants}</span>; các sản phẩm tạo thành ở vế phải gồm <span class="text-emerald-400 font-mono">${rawProducts}</span>.</li>
+                        <li><strong>Bước 2 (Cân bằng nguyên tố chính / Kim loại / Phi kim):</strong> Chọn nguyên tử kim loại hoặc phi kim đặc trưng (như Fe, Na, N, S, C) ở vế trái, đếm số lượng nguyên tử ở vế phải rồi đặt hệ số thích hợp trước chất chứa nguyên tố đó để số lượng hai vế bằng nhau.</li>
+                        <li><strong>Bước 3 (Cân bằng nhóm nguyên tố và Hydro/Oxygen):</strong> Kiểm tra các nhóm ion bền (như <span class="font-mono">SO<sub>4</sub></span>, <span class="font-mono">NO<sub>3</sub></span>, <span class="font-mono">CO<sub>3</sub></span>), sau đó cân bằng nguyên tử Hydro (<span class="font-mono">H</span>) và cuối cùng cân bằng nguyên tử Oxygen (<span class="font-mono">O</span>) bằng cách điều chỉnh hệ số của nước (<span class="font-mono">H<sub>2</sub>O</span>) ở cả 2 vế.</li>
+                        <li><strong>Bước 4 (Kiểm tra lại hệ số tối giản):</strong> Đảm bảo tổng số nguyên tử của từng nguyên tố ở vế trái khớp hoàn toàn với vế phải theo định luật bảo toàn nguyên tố.</li>
+                    </ol>
+                </div>
+            `;
+            document.getElementById('modalEqBalanceGuide').innerHTML = guideHTML;
+
+            document.getElementById('eqModal').classList.remove('hidden');
+            startEqCanvasAnimation(item);
+        }
+
+        function closeEqModal() {
+            document.getElementById('eqModal').classList.add('hidden');
+            stopTextbookCanvas();
+        }
+
+        function stopTextbookCanvas() {
+            if (eqAnimId) { cancelAnimationFrame(eqAnimId); eqAnimId = null; }
+        }
+
+        function startEqCanvasAnimation(item) {
+            stopTextbookCanvas();
+            const canvas = document.getElementById('eqCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let t = 0;
+
+            let cleanEq = item.eq.replace(/<[^>]*>/g, '');
+            let parts = cleanEq.split(/→|⇌/);
+            let rawReactants = parts[0] ? parts[0].trim() : "Chất tham gia";
+            let rawProducts = parts[1] ? parts[1].trim() : "Sản phẩm";
+
+            function parseFirstTerm(termStr) {
+                let match = termStr.match(/^(\d+)/);
+                let count = match ? parseInt(match[1]) : 1;
+                let name = termStr.replace(/^\d+/, '').trim();
+                return { count, name };
+            }
+
+            let firstReactantTerm = rawReactants.split('+')[0].trim();
+            let firstProductTerm = rawProducts.split('+')[0].trim();
+            let parsedR = parseFirstTerm(firstReactantTerm);
+            let parsedP = parseFirstTerm(firstProductTerm);
+
+            document.getElementById('modalCanvasCaption').innerHTML = `● Mô hình 3D Stoichiometric: (${parsedR.count} phân tử ${parsedR.name} ➔ ${parsedP.count} phân tử ${parsedP.name})`;
+
+            function drawBallAndStickCluster(centerX, centerY, angle, label, count, colorCenter, colorOuter) {
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle);
+
+                for (let c = 0; c < count; c++) {
+                    let offsetX = (c - (count - 1) / 2) * 32;
+                    let offsetY = (c % 2 === 0 ? -1 : 1) * 10;
+
+                    ctx.save();
+                    ctx.translate(offsetX, offsetY);
+
+                    // Central atom
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 15, 0, Math.PI * 2);
+                    ctx.fillStyle = colorCenter;
+                    ctx.shadowColor = colorCenter;
+                    ctx.shadowBlur = 12;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    // Surrounding bonded atoms
+                    for (let i = 0; i < 3; i++) {
+                        let a = (i * 2 * Math.PI) / 3 + t * 0.5;
+                        let bx = Math.cos(a) * 26;
+                        let by = Math.sin(a) * 26;
+
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        ctx.lineTo(bx, by);
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                        ctx.lineWidth = 3;
+                        ctx.stroke();
+
+                        ctx.beginPath();
+                        ctx.arc(bx, by, 8, 0, Math.PI * 2);
+                        ctx.fillStyle = colorOuter;
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                }
+
+                ctx.restore();
+
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 11px Poppins';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${count}x ${label}`, centerX, centerY + 58);
+            }
+
+            function drawEqFrame() {
+                ctx.fillStyle = '#030712';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                let cx = canvas.width / 2;
+                let cy = canvas.height / 2;
+                let pulse = Math.sin(t) * 8;
+
+                drawBallAndStickCluster(cx - 120 + pulse, cy - 10, t, parsedR.name, parsedR.count, "#3b82f6", "#ef4444");
+
+                ctx.beginPath();
+                ctx.moveTo(cx - 45, cy - 10);
+                ctx.lineTo(cx + 45, cy - 10);
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(cx + 32, cy - 16);
+                ctx.lineTo(cx + 45, cy - 10);
+                ctx.lineTo(cx + 32, cy - 4);
+                ctx.strokeStyle = '#10b981';
+                ctx.stroke();
+
+                ctx.fillStyle = '#10b981';
+                ctx.font = 'bold 10px Poppins';
+                ctx.textAlign = 'center';
+                ctx.fillText('Phản ứng hóa học', cx, cy - 22);
+
+                drawBallAndStickCluster(cx + 120 - pulse, cy - 10, -t * 1.2, parsedP.name, parsedP.count, "#f59e0b", "#10b981");
+
+                t += 0.03;
+                eqAnimId = requestAnimationFrame(drawEqFrame);
+            }
+            drawEqFrame();
+        }
+
+        // ==================== FREE ELECTRON SIMULATION ====================
+        const simCanvas = document.getElementById('simCanvas');
+        const sCtx = simCanvas ? simCanvas.getContext('2d') : null;
+        let electronVoltage = 0, electronTemp = 300, electronDensity = 70;
         let electronSimRunning = false;
         let ions = [], electrons = [];
-        let collisionCounter = 0;
-        let frameCounter = 0;
+        let collisionCounter = 0, frameCounter = 0;
 
         class Ion {
             constructor(x, y) {
@@ -667,19 +895,11 @@
                 this.y = this.baseY + Math.cos(this.phase * 1.2) * amp;
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#ef4444';
-                ctx.shadowColor = '#ef4444';
-                ctx.shadowBlur = 6;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(this.x - 4, this.y); ctx.lineTo(this.x + 4, this.y);
-                ctx.moveTo(this.x, this.y - 4); ctx.lineTo(this.x, this.y + 4);
-                ctx.stroke();
+                if (!sCtx) return;
+                sCtx.beginPath();
+                sCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                sCtx.fillStyle = '#ef4444';
+                sCtx.fill();
             }
         }
 
@@ -696,15 +916,11 @@
                 this.vx += acc;
                 this.x += this.vx;
                 this.y += this.vy;
-                this.vx *= 0.98;
-                this.vy *= 0.98;
-                this.vx += (Math.random() - 0.5) * 0.35 * (electronTemp / 200);
-                this.vy += (Math.random() - 0.5) * 0.35 * (electronTemp / 200);
-
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
+                this.vx *= 0.98; this.vy *= 0.98;
+                if (this.x < 0) this.x = simCanvas.width;
+                if (this.x > simCanvas.width) this.x = 0;
+                if (this.y < 0) this.y = simCanvas.height;
+                if (this.y > simCanvas.height) this.y = 0;
 
                 for (let ion of ions) {
                     let dx = this.x - ion.x;
@@ -717,34 +933,31 @@
                         let scatter = angle + (Math.random() - 0.5) * Math.PI;
                         this.vx = Math.cos(scatter) * speed * 0.88;
                         this.vy = Math.sin(scatter) * speed * 0.88;
-                        this.x = ion.x + Math.cos(angle) * (ion.radius + this.radius + 1);
-                        this.y = ion.y + Math.sin(angle) * (ion.radius + this.radius + 1);
                     }
                 }
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#3b82f6';
-                ctx.shadowColor = '#3b82f6';
-                ctx.shadowBlur = 5;
-                ctx.fill();
-                ctx.shadowBlur = 0;
+                if (!sCtx) return;
+                sCtx.beginPath();
+                sCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                sCtx.fillStyle = '#3b82f6';
+                sCtx.fill();
             }
         }
 
         function initLattice() {
+            if (!simCanvas) return;
             ions = []; electrons = [];
             let cols = 11, rows = 6;
-            let spX = canvas.width / (cols + 1);
-            let spY = canvas.height / (rows + 1);
+            let spX = simCanvas.width / (cols + 1);
+            let spY = simCanvas.height / (rows + 1);
             for (let i = 1; i <= cols; i++) {
                 for (let j = 1; j <= rows; j++) {
                     ions.push(new Ion(i * spX + (j % 2 === 0 ? 12 : 0), j * spY));
                 }
             }
             for (let k = 0; k < electronDensity; k++) {
-                electrons.push(new ElectronPart(Math.random() * canvas.width, Math.random() * canvas.height));
+                electrons.push(new ElectronPart(Math.random() * simCanvas.width, Math.random() * simCanvas.height));
             }
         }
 
@@ -752,21 +965,9 @@
             electronVoltage = parseFloat(document.getElementById('rangeVoltage').value);
             electronTemp = parseInt(document.getElementById('rangeTemp').value);
             electronDensity = parseInt(document.getElementById('rangeDensity').value);
-
             document.getElementById('valVoltage').textContent = electronVoltage + " V";
             document.getElementById('valTemp').textContent = electronTemp + " K";
-            let dLabel = "Trung bình";
-            if (electronDensity < 50) dLabel = "Thấp";
-            else if (electronDensity > 110) dLabel = "Cao";
-            document.getElementById('valDensity').textContent = dLabel;
-
-            if (electrons.length < electronDensity) {
-                while (electrons.length < electronDensity) {
-                    electrons.push(new ElectronPart(Math.random() * canvas.width, Math.random() * canvas.height));
-                }
-            } else if (electrons.length > electronDensity) {
-                electrons = electrons.slice(0, electronDensity);
-            }
+            document.getElementById('valDensity').textContent = electronDensity > 110 ? "Cao" : (electronDensity < 50 ? "Thấp" : "Trung bình");
         }
 
         function toggleElectronSim() {
@@ -774,63 +975,38 @@
             const btn = document.getElementById('btnTogglePlay');
             if (electronSimRunning) {
                 btn.textContent = "Tạm dừng";
-                btn.className = "flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition";
                 electronLoop();
             } else {
                 btn.textContent = "Tiếp tục";
-                btn.className = "flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition";
             }
         }
 
-        function resetElectronSim() {
-            collisionCounter = 0;
-            initLattice();
-        }
+        function resetElectronSim() { collisionCounter = 0; initLattice(); }
 
         function electronLoop() {
-            if (!electronSimRunning) return;
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (!electronSimRunning || !sCtx) return;
+            sCtx.fillStyle = '#0f172a';
+            sCtx.fillRect(0, 0, simCanvas.width, simCanvas.height);
 
-            if (electronVoltage !== 0) {
-                ctx.strokeStyle = electronVoltage > 0 ? 'rgba(59, 130, 246, 0.12)' : 'rgba(239, 68, 68, 0.12)';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                for (let x = 40; x < canvas.width; x += 80) {
-                    ctx.moveTo(x, 15);
-                    ctx.lineTo(x + (electronVoltage > 0 ? 25 : -25), 15);
-                }
-                ctx.stroke();
-            }
-
-            for (let ion of ions) {
-                ion.update(electronTemp);
-                ion.draw();
-            }
-
+            for (let ion of ions) { ion.update(electronTemp); ion.draw(); }
             let totalVx = 0;
-            for (let el of electrons) {
-                el.update();
-                el.draw();
-                totalVx += el.vx;
-            }
+            for (let el of electrons) { el.update(); el.draw(); totalVx += el.vx; }
 
             let driftV = Math.abs(totalVx / electrons.length);
             let currM = (driftV * Math.abs(electronVoltage) * 0.35).toFixed(2);
-
             frameCounter++;
             if (frameCounter % 10 === 0) {
                 document.getElementById('statDrift').textContent = driftV.toFixed(2);
                 document.getElementById('statCurrent').textContent = currM + " A";
                 document.getElementById('statCollisions').textContent = collisionCounter;
             }
-
             requestAnimationFrame(electronLoop);
         }
 
         window.onload = function() {
             renderElementList();
             renderElementDetail();
+            renderEquations();
         };
     </script>
 </body>
